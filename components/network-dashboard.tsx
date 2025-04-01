@@ -287,15 +287,7 @@ export function NetworkDashboard() {
    {/* Control Panel Section */}
    <Card className="backdrop-blur-md border-0">
         <CardContent className="p-0">
-        <RetroGamePanel 
-          metrics={metrics}
-          isRunning={isRunning}
-          onToggle={handleToggleMeasurement}
-          config={{
-            asciiStyle: "rpg",
-            animationSpeed: 400
-          }}
-        />
+
         <RetroControlPanel 
           isRunning={isRunning} 
           onToggle={handleToggleMeasurement} 
@@ -304,6 +296,15 @@ export function NetworkDashboard() {
           metrics={metrics.length > 0 ? {
             packetLoss: metrics[metrics.length - 1].packetLoss
           } : undefined}
+        />
+        <RetroGamePanel 
+          metrics={metrics}
+          isRunning={isRunning}
+          onToggle={handleToggleMeasurement}
+          config={{
+            asciiStyle: "rpg",
+            animationSpeed: 400
+          }}
         />
         </CardContent>
       </Card>

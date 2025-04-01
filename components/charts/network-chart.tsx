@@ -39,6 +39,32 @@ export function NetworkChart({ metrics, isRunning }: NetworkChartProps) {
     }
   }
 
+  const getMetricStatus = {
+    ping: (value: number) => {
+      if (value >= 2000) return '🔴 Critical'
+      if (value >= 1000) return '🟠 Very High'
+      if (value >= 500) return '🟡 High'
+      if (value >= 150) return '🟡 Warning'
+      if (value >= 50) return '🟢 Fair'
+      return '✨ Optimal'
+    },
+    jitter: (value: number) => {
+      if (value >= 1600) return '🔴 Critical'
+      if (value >= 800) return '🟠 Very High'
+      if (value >= 400) return '🟡 High'
+      if (value >= 100) return '🟡 Warning'
+      if (value >= 30) return '🟢 Fair'
+      return '✨ Optimal'
+    },
+    packetLoss: (value: number) => {
+      if (value >= 100) return '🔴 Critical'
+      if (value >= 50) return '🟠 Very High'
+      if (value >= 25) return '🟡 High'
+      if (value >= 1) return '🟡 Warning'
+      return '✨ Optimal'
+    }
+  }
+
   // Format time for display
   const formatTime = (timestamp: number) => {
     const date = new Date(timestamp)
@@ -93,10 +119,14 @@ export function NetworkChart({ metrics, isRunning }: NetworkChartProps) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <div 
-                      className={cn("w-[45%] rounded-t-sm", getMetricColor.ping(metric.ping))}
-                      style={{ height: pingHeight }}
-                    ></div>
+                  <div 
+                    className={cn(
+                      "w-[45%] rounded-t-sm transition-all duration-300",
+                      getMetricColor.ping(metric.ping),
+                      metric.ping >= 1000 && "animate-pulse-glow"
+                    )}
+                    style={{ height: pingHeight }}
+                  ></div>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Ping: {metric.ping.toFixed(1)}ms</p>
@@ -108,10 +138,14 @@ export function NetworkChart({ metrics, isRunning }: NetworkChartProps) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <div 
-                      className={cn("w-[45%] rounded-t-sm", getMetricColor.jitter(metric.jitter))}
-                      style={{ height: jitterHeight }}
-                    ></div>
+                  <div 
+                    className={cn(
+                      "w-[45%] rounded-t-sm transition-all duration-300",
+                      getMetricColor.jitter(metric.jitter),
+                      metric.jitter >= 800 && "animate-pulse-glow"
+                    )}
+                    style={{ height: jitterHeight }}
+                  ></div>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Jitter: {metric.jitter.toFixed(1)}ms</p>
@@ -126,16 +160,34 @@ export function NetworkChart({ metrics, isRunning }: NetworkChartProps) {
         </div>
 
         {/* Legend */}
-        <div className="absolute bottom-[-30px] left-0 right-0 flex justify-center gap-4 text-xs">
-          <div className="flex items-center">
-            <div className={cn("w-3 h-3 mr-1 rounded-sm", getMetricColor.ping(metrics[metrics.length - 1]?.ping || 0))}></div>
-            <span>Ping</span>
-          </div>
-          <div className="flex items-center">
-            <div className={cn("w-3 h-3 mr-1 rounded-sm", getMetricColor.jitter(metrics[metrics.length - 1]?.jitter || 0))}></div>
-            <span>Jitter</span>
-          </div>
-        </div>
+        <div className="absolute bottom-[-40px] left-0 right-0 flex justify-center gap-6 text-xs">
+  <div className="flex flex-col items-center gap-1">
+    <div className="flex items-center gap-2">
+      <div className={cn(
+        "w-3 h-3 mr-1 rounded-sm transition-all duration-300",
+        getMetricColor.ping(metrics[metrics.length - 1]?.ping || 0),
+        metrics[metrics.length - 1]?.ping >= 1000 && "animate-metric-alert"
+      )}></div>
+      <span>Ping</span>
+    </div>
+    <span className="text-[10px] text-muted-foreground">
+      {getMetricStatus.ping(metrics[metrics.length - 1]?.ping || 0)}
+    </span>
+  </div>
+  <div className="flex flex-col items-center gap-1">
+    <div className="flex items-center gap-2">
+      <div className={cn(
+        "w-3 h-3 mr-1 rounded-sm transition-all duration-300",
+        getMetricColor.jitter(metrics[metrics.length - 1]?.jitter || 0),
+        metrics[metrics.length - 1]?.jitter >= 800 && "animate-metric-alert"
+      )}></div>
+      <span>Jitter</span>
+    </div>
+    <span className="text-[10px] text-muted-foreground">
+      {getMetricStatus.jitter(metrics[metrics.length - 1]?.jitter || 0)}
+    </span>
+  </div>
+</div>
       </div>
     )
   }
@@ -185,9 +237,13 @@ export function NetworkChart({ metrics, isRunning }: NetworkChartProps) {
                     <Tooltip>
                       <TooltipTrigger asChild>
                       <div 
-                      className={cn("w-[45%] rounded-t-sm", getMetricColor.packetLoss(metric.packetLoss))}
-                      style={{ height }}
-                    ></div>
+                        className={cn(
+                          "w-[45%] rounded-t-sm transition-all duration-300",
+                          getMetricColor.packetLoss(metric.packetLoss),
+                          metric.packetLoss >= 50 && "animate-pulse-glow"
+                        )}
+                        style={{ height }}
+                      ></div>
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>Packet Loss: {metric.packetLoss.toFixed(2)}%</p>
@@ -202,13 +258,22 @@ export function NetworkChart({ metrics, isRunning }: NetworkChartProps) {
         </div>
   
         {/* Legend */}
-        <div className="absolute bottom-[-30px] left-0 right-0 flex justify-center gap-4 text-xs">
-          <div className="flex items-center">
-            <div className="w-3 h-3 bg-primary/80 mr-1"></div>
-            <span>Packet Loss</span>
+        <div className="absolute bottom-[-40px] left-0 right-0 flex justify-center gap-4 text-xs">
+            <div className="flex flex-col items-center gap-1">
+              <div className="flex items-center gap-2">
+                <div className={cn(
+                  "w-3 h-3 mr-1 rounded-sm transition-all duration-300",
+                  getMetricColor.packetLoss(metrics[metrics.length - 1]?.packetLoss || 0),
+                  metrics[metrics.length - 1]?.packetLoss >= 50 && "animate-metric-alert"
+                )}></div>
+                <span>Packet Loss</span>
+              </div>
+              <span className="text-[10px] text-muted-foreground">
+                {getMetricStatus.packetLoss(metrics[metrics.length - 1]?.packetLoss || 0)}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
     )
   }
 
