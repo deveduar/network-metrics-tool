@@ -6,8 +6,13 @@ import { NetworkChart } from "@/components/charts/network-chart"
 import { ControlPanel } from "@/components/panels/control-panel"
 import { MetricsPanel } from "@/components/panels/metrics-panel"
 import { AlertToast } from "@/components/ui/alert-toast"
-import { Card } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
+import ConnectionMood from "@/components/connection-mood"
+import HappinessMeter from "@/components/happiness-meter"
+import { RetroControlPanel } from "@/components/panels/retro-control-panel"
+import { RetroGamePanel } from "@/components/panels/retro-game-panel"
+import { StatusIndicators } from "@/components/status-indicators"
 
 export function NetworkDashboard() {
   const { toast } = useToast()
@@ -275,21 +280,79 @@ export function NetworkDashboard() {
 
   return (
     <div className="space-y-6">
+    <div className="">
+
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="p-4 backdrop-blur-md border border-primary/10 md:col-span-2">
+   {/* Control Panel Section */}
+   <Card className="backdrop-blur-md border-0">
+        <CardContent className="p-0">
+        <RetroGamePanel 
+          metrics={metrics}
+          isRunning={isRunning}
+          onToggle={handleToggleMeasurement}
+          config={{
+            asciiStyle: "rpg",
+            animationSpeed: 400
+          }}
+        />
+        <RetroControlPanel 
+          isRunning={isRunning} 
+          onToggle={handleToggleMeasurement} 
+        />
+        <StatusIndicators 
+          metrics={metrics.length > 0 ? {
+            packetLoss: metrics[metrics.length - 1].packetLoss
+          } : undefined}
+        />
+        </CardContent>
+      </Card>
+        {/* Chart Section */}
+        <Card className="p-0 backdrop-blur-md  border-0 md:col-span-2">
           <NetworkChart metrics={metrics} isRunning={isRunning} />
         </Card>
 
+        {/* Right Column */}
         <div className="space-y-6">
-          <Card className="p-4 backdrop-blur-md border border-primary/10">
-            <ControlPanel isRunning={isRunning} onToggle={handleToggleMeasurement} />
-          </Card>
 
-          <Card className="p-4 backdrop-blur-md border border-primary/10">
+          {/* <Card className="p-4 backdrop-blur-md border border-primary/10">
             <MetricsPanel metrics={metrics} />
-          </Card>
+          </Card> */}
+
+          {/* Retro Game Panel */}
+          
+
+       
         </div>
+    
+
+        {/* Añadimos los nuevos componentes */}
+        {/* {metrics.length > 0 && (
+          <>
+              <ConnectionMood
+                metrics={{
+                  ping: metrics[metrics.length - 1].ping,
+                  jitter: metrics[metrics.length - 1].jitter,
+                  packetLoss: metrics[metrics.length - 1].packetLoss,
+                }}
+                config={{
+                  asciiStyle: "rpg",
+                  animationSpeed: 500,
+                  showMetrics: true,
+                }}
+              />
+              <HappinessMeter
+                ping={metrics[metrics.length - 1].ping}
+                jitter={metrics[metrics.length - 1].jitter}
+                packetLoss={metrics[metrics.length - 1].packetLoss}
+                size="sm"
+                animationSpeed={500}
+              />
+           
+          </>
+        )} */}
       </div>
+    </div>
 
       {alerts.map((alert) => (
         <AlertToast

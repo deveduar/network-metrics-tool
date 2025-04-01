@@ -1,4 +1,5 @@
 import { ThemeProvider } from "@/components/theme-provider"
+import { RetroNavBar } from "@/components/retro-nav-bar"
 import "./globals.css";
 
 export default function RootLayout({
@@ -16,6 +17,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <RetroNavBar />
           {children}
         </ThemeProvider>
       </body>

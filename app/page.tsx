@@ -8,7 +8,7 @@ export default function Home() {
     <ThemeProvider defaultTheme="system" storageKey="network-metrics-theme">
       <main className="min-h-screen p-4 md:p-8">
         <div className="container mx-auto">
-          <h1 className="text-3xl font-bold mb-6 text-primary">Network Metrics Dashboard</h1>
+          {/* <h1 className="text-3xl font-bold mb-6 text-primary">Network Metrics Dashboard</h1> */}
           <NetworkDashboard />
         </div>
       </main>
