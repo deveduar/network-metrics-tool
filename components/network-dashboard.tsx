@@ -310,7 +310,11 @@ export function NetworkDashboard() {
       </Card>
         {/* Chart Section */}
         <Card className="p-0 backdrop-blur-md  border-0 md:col-span-2">
-          <NetworkChart metrics={metrics} isRunning={isRunning} />
+        <NetworkChart 
+          metrics={metrics} 
+          isRunning={isRunning} 
+          onToggle={handleToggleMeasurement}
+        />
         </Card>
 
         {/* Right Column */}

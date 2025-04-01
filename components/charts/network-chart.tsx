@@ -10,9 +10,11 @@ import type { NetworkMetrics } from "@/types/network"
 interface NetworkChartProps {
   metrics: NetworkMetrics[]
   isRunning: boolean
+  onToggle?: () => void
 }
 
-export function NetworkChart({ metrics, isRunning }: NetworkChartProps) {
+
+export function NetworkChart({ metrics, isRunning, onToggle }: NetworkChartProps)  {
   const [activeTab, setActiveTab] = useState("latency")
 
   const getMetricColor = {
@@ -65,20 +67,127 @@ export function NetworkChart({ metrics, isRunning }: NetworkChartProps) {
     }
   }
 
+  const getSessionSummary = (metrics: NetworkMetrics[]) => {
+    if (metrics.length === 0) return null
+    
+    const avgPing = metrics.reduce((sum, m) => sum + m.ping, 0) / metrics.length
+    const avgJitter = metrics.reduce((sum, m) => sum + m.jitter, 0) / metrics.length
+    const avgPacketLoss = metrics.reduce((sum, m) => sum + m.packetLoss, 0) / metrics.length
+    const duration = Math.round((metrics[metrics.length - 1].timestamp - metrics[0].timestamp) / 1000)
+  
+    // Get color classes and status for each metric
+    const pingStatus = getMetricStatus.ping(avgPing)
+    const jitterStatus = getMetricStatus.jitter(avgJitter)
+    const packetLossStatus = getMetricStatus.packetLoss(avgPacketLoss)
+  
+    const pingColor = getMetricColor.ping(avgPing)
+    const jitterColor = getMetricColor.jitter(avgJitter)
+    const packetLossColor = getMetricColor.packetLoss(avgPacketLoss)
+  
+    // Overall connection quality (use the worst status)
+    const getOverallQuality = () => {
+      if (pingStatus.includes('Critical') || jitterStatus.includes('Critical') || packetLossStatus.includes('Critical')) {
+        return { status: '🔴 Critical Connection', color: 'text-[#ff1744] dark:text-[#ff1744]' }
+      }
+      if (pingStatus.includes('Very High') || jitterStatus.includes('Very High') || packetLossStatus.includes('Very High')) {
+        return { status: '🟠 Poor Connection', color: 'text-[#ff4081] dark:text-[#ff4081]' }
+      }
+      if (pingStatus.includes('High') || jitterStatus.includes('High') || packetLossStatus.includes('High')) {
+        return { status: '🟡 Unstable Connection', color: 'text-[#ff9100] dark:text-[#ff9100]' }
+      }
+      if (pingStatus.includes('Warning') || jitterStatus.includes('Warning') || packetLossStatus.includes('Warning')) {
+        return { status: '🟡 Fair Connection', color: 'text-[#ffea00] dark:text-[#ffea00]' }
+      }
+      if (pingStatus.includes('Fair') || jitterStatus.includes('Fair')) {
+        return { status: '🟢 Good Connection', color: 'text-[#00e676] dark:text-[#00e676]' }
+      }
+      return { status: '✨ Optimal Connection', color: 'text-[#00fff5] dark:text-[#00fff5]' }
+    }
+  
+    const quality = getOverallQuality()
+  
+    return {
+      avgPing: avgPing.toFixed(1),
+      avgJitter: avgJitter.toFixed(1),
+      avgPacketLoss: avgPacketLoss.toFixed(2),
+      duration: `${Math.floor(duration / 60)}m ${duration % 60}s`,
+      samples: metrics.length,
+      pingColor,
+      jitterColor,
+      packetLossColor,
+      pingStatus,
+      jitterStatus,
+      packetLossStatus,
+      quality
+    }
+  }
+
+  const renderEmptyState = () => {
+    if (isRunning) {
+      return (
+        <div className="text-muted-foreground text-center space-y-2">
+          <p>No data available.</p>
+          <p className="text-sm">
+            <span className="animate-pulse">Collecting metrics...</span>
+          </p>
+        </div>
+      )
+    }
+  
+    const summary = getSessionSummary(metrics)
+    
+    return (
+      <div className="text-muted-foreground text-center space-y-4">
+        {summary ? (
+          <>
+            <div className={cn("text-lg font-medium", summary.quality.color)}>
+              {summary.quality.status}
+            </div>
+            <div className="grid grid-cols-2 gap-4 max-w-[300px] mx-auto text-sm">
+              <div className="space-y-2">
+                <p>Ping: <span className={cn("font-mono", summary.pingColor.replace('bg-', 'text-').replace('/80', '').replace('dark:', ''))}>{summary.avgPing}ms</span></p>
+                <p>Jitter: <span className={cn("font-mono", summary.jitterColor.replace('bg-', 'text-').replace('/80', '').replace('dark:', ''))}>{summary.avgJitter}ms</span></p>
+                <p>Packet Loss: <span className={cn("font-mono", summary.packetLossColor.replace('bg-', 'text-').replace('/80', '').replace('dark:', ''))}>{summary.avgPacketLoss}%</span></p>
+              </div>
+              <div className="space-y-2">
+                <p>Duration: <span className="font-mono text-primary">{summary.duration}</span></p>
+                <p>Samples: <span className="font-mono text-primary">{summary.samples}</span></p>
+              </div>
+            </div>
+            <p className="text-xs mt-4">
+              Click to start new measurement {blinkState ? "_" : " "}
+            </p>
+          </>
+        ) : (
+          <p className="text-sm">
+            Click here or press START to begin measurement {blinkState ? "_" : " "}
+          </p>
+        )}
+      </div>
+    )
+  }
+
+
   // Format time for display
   const formatTime = (timestamp: number) => {
     const date = new Date(timestamp)
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })
   }
+  const [blinkState, setBlinkState] = useState(true)
 
+  
   // Simple chart rendering using divs and CSS
   const renderLatencyChart = () => {
-    if (metrics.length === 0)
+    if (metrics.length === 0 || (!isRunning && metrics.length > 0)) {
       return (
-        <div className="flex items-center justify-center h-[300px] text-muted-foreground">
-          No data available. Start measurement to see metrics.
+        <div 
+          className="flex flex-col items-center justify-center h-[300px] space-y-4 cursor-pointer"
+          onClick={onToggle}
+        >
+          {renderEmptyState()}
         </div>
       )
+    }
 
     const maxPing = Math.max(...metrics.map((m) => m.ping), 100) // At least 100ms for scale
     const maxJitter = Math.max(...metrics.map((m) => m.jitter), 50) // At least 50ms for scale
@@ -193,12 +302,17 @@ export function NetworkChart({ metrics, isRunning }: NetworkChartProps) {
   }
 
   const renderQualityChart = () => {
-    if (metrics.length === 0)
+    if (metrics.length === 0 || (!isRunning && metrics.length > 0)) {
       return (
-        <div className="flex items-center justify-center h-[300px] text-muted-foreground">
-          No data available. Start measurement to see metrics.
+        <div 
+          className="flex flex-col items-center justify-center h-[300px] space-y-4 cursor-pointer"
+          onClick={onToggle}
+        >
+          {renderEmptyState()}
         </div>
       )
+    }
+  
   
     const maxPacketLoss = Math.max(...metrics.map((m) => m.packetLoss), 5) // At least 5% for scale
   
