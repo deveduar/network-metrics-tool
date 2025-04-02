@@ -103,10 +103,7 @@ export default function ConnectionMood({ metrics, config = {}, className }: Conn
     >
       {/* <h3 className="text-lg font-medium mb-2">Connection Mood</h3> */}
 
-      {/* ASCII Art Display */}
-      <pre className={cn("whitespace-pre text-lg text-center mb-4")} aria-label={`Connection status: ${mood}`}>
-        {currentFrame}
-      </pre>
+
 
       {/* Metrics Display */}
       {showMetrics && (
@@ -131,7 +128,10 @@ export default function ConnectionMood({ metrics, config = {}, className }: Conn
           </div>
         </div>
       )}
-
+      {/* ASCII Art Display */}
+      <pre className={cn("whitespace-pre text-xl text-left pt-2")} aria-label={`Connection status: ${mood}`}>
+        {currentFrame}
+      </pre>
       {/* Screen reader text */}
       <span className="sr-only">
         Connection status is {mood}. Ping: {ping}ms, Jitter: {jitter}ms, Packet Loss: {packetLoss}%.

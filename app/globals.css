@@ -45,6 +45,29 @@
     --chart-3: 142 76% 36%;
     --chart-4: 346.8 77.2% 49.8%;
     --chart-5: 38 92% 50%;
+
+    /* Text colors */
+    --text-base: 222.2 84% 4.9%;
+    --text-muted: 215.4 16.3% 46.9%;
+    --text-success: var(--success);
+    --text-warning: var(--warning);
+    --text-destructive: var(--destructive);
+
+    /* Metric Status Colors */
+    --metric-critical: #ff1744;
+    --metric-very-high: #ff4081;
+    --metric-high: #ff9100;
+    --metric-warning: #ffea00;
+    --metric-fair: #00e676;
+    --metric-optimal: #00fff5;
+    
+    /* Jitter specific colors */
+    --metric-jitter-critical: #d500f9;
+    --metric-jitter-very-high: #651fff;
+    --metric-jitter-high: #3d5afe;
+    --metric-jitter-warning: #00b0ff;
+    --metric-jitter-fair: #64ffda;
+    --metric-jitter-optimal: #18ffff;
   }
 
   .dark {
@@ -87,6 +110,27 @@
     --chart-3: 142 76% 50%;
     --chart-4: 346.8 77.2% 60%;
     --chart-5: 48 96% 70%;
+        /* Text colors */
+    --text-base: 210 40% 98%;
+    --text-muted: 215 20.2% 65.1%;
+    --text-success: var(--success);
+    --text-warning: var(--warning);
+    --text-destructive: var(--destructive);
+    /* Metric Status Colors - Dark Mode (pueden ser los mismos) */
+    --metric-critical: #ff1744;
+    --metric-very-high: #ff4081;
+    --metric-high: #ff9100;
+    --metric-warning: #ffea00;
+    --metric-fair: #00e676;
+    --metric-optimal: #00fff5;
+    
+    /* Jitter specific colors - Dark Mode */
+    --metric-jitter-critical: #d500f9;
+    --metric-jitter-very-high: #651fff;
+    --metric-jitter-high: #3d5afe;
+    --metric-jitter-warning: #00b0ff;
+    --metric-jitter-fair: #64ffda;
+    --metric-jitter-optimal: #18ffff;
   }
 }
 

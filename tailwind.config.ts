@@ -25,6 +25,20 @@ const config = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        borderWidth: {
+          '3': '3px',
+        },
+        borderColor: {
+          'metric': {
+            'critical': '#ff1744',
+            'very-high': '#ff4081',
+            'high': '#ff9100',
+            'warning': '#ffea00',
+            'fair': '#00e676',
+            'optimal': '#00fff5',
+          }
+        },
+        
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

@@ -8,9 +8,10 @@ interface StatusIndicatorsProps {
     packetLoss: number
   }
   className?: string
+  retro?: boolean
 }
 
-export function StatusIndicators({ metrics, className }: StatusIndicatorsProps) {
+export function StatusIndicators({ metrics, className, retro = false }: StatusIndicatorsProps) {
   const { isOnline, connectionType } = useNetworkInfo()
 
   const getConnectionStatus = () => {
@@ -22,6 +23,42 @@ export function StatusIndicators({ metrics, className }: StatusIndicatorsProps) 
   }
 
   const connectionStatus = getConnectionStatus()
+
+  if (retro) {
+    return (
+      <div className={cn("flex gap-4 font-mono text-text text-xs", className)}>
+        <div className="flex items-center gap-2">
+          <span className={cn(
+            "inline-block w-2 h-2 animate-pulse",
+            {
+              'bg-success': connectionStatus.status === 'online',
+              'bg-warning': connectionStatus.status === 'unstable',
+              'bg-destructive': connectionStatus.status === 'offline'
+            }
+          )} />
+          <span className={cn(
+            "uppercase px-2 py-0.5 rounded border",
+            {
+              'text-text-success bg-success/10 border-success/20': connectionStatus.status === 'online',
+              'text-text-warning bg-warning/10 border-warning/20': connectionStatus.status === 'unstable',
+              'text-text-destructive bg-destructive/10 border-destructive/20': connectionStatus.status === 'offline'
+            }
+          )}>
+            {connectionStatus.status}
+          </span>
+        </div>
+        {connectionType && (
+          <div className="flex items-center gap-2">
+            <span className="inline-block w-2 h-2 bg-primary animate-pulse" />
+            <span className="uppercase px-2 py-0.5 rounded border text-text-primary bg-primary/10 border-primary/20">
+              {connectionType}
+            </span>
+          </div>
+        )}
+      </div>
+    )
+  }
+
 
   return (
     <div className={cn("grid grid-cols-2 gap-6", className)}>

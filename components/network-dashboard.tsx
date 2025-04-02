@@ -12,7 +12,7 @@ import ConnectionMood from "@/components/connection-mood"
 import HappinessMeter from "@/components/happiness-meter"
 import { RetroControlPanel } from "@/components/panels/retro-control-panel"
 import { RetroGamePanel } from "@/components/panels/retro-game-panel"
-import { StatusIndicators } from "@/components/status-indicators"
+
 
 export function NetworkDashboard() {
   const { toast } = useToast()
@@ -277,6 +277,13 @@ export function NetworkDashboard() {
       clearAlerts()
     }
   }
+  const handleReset = () => {
+    if (worker && isRunning) {
+      worker.postMessage({ command: "stop" });
+      worker.postMessage({ command: "start" });
+      clearAlerts();
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -287,16 +294,7 @@ export function NetworkDashboard() {
    {/* Control Panel Section */}
    <Card className="backdrop-blur-md border-0">
         <CardContent className="p-0">
-
-        <RetroControlPanel 
-          isRunning={isRunning} 
-          onToggle={handleToggleMeasurement} 
-        />
-        <StatusIndicators 
-          metrics={metrics.length > 0 ? {
-            packetLoss: metrics[metrics.length - 1].packetLoss
-          } : undefined}
-        />
+        
         <RetroGamePanel 
           metrics={metrics}
           isRunning={isRunning}
@@ -306,6 +304,21 @@ export function NetworkDashboard() {
             animationSpeed: 400
           }}
         />
+       <RetroControlPanel 
+          isRunning={isRunning} 
+          onToggle={handleToggleMeasurement}
+          onReset={handleReset}
+          metrics={metrics.length > 0 ? {
+            packetLoss: metrics[metrics.length - 1].packetLoss
+          } : undefined}
+        />
+
+
+        {/* <StatusIndicators 
+          metrics={metrics.length > 0 ? {
+            packetLoss: metrics[metrics.length - 1].packetLoss
+          } : undefined}
+        /> */}
         </CardContent>
       </Card>
         {/* Chart Section */}

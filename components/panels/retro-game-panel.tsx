@@ -6,6 +6,9 @@ import type { NetworkMetrics } from "@/types/network"
 import type { AsciiStyle } from "../connection-mood-constants"
 import { RETRO_ASCII, getNetworkHealth, getHealthColorClasses, getStatusBar, ANIMATION_SPEEDS } from "../retro-control-constants"
 import ConnectionMood from "@/components/connection-mood"
+import { StatusIndicators } from "@/components/status-indicator"
+
+import { RetroBlinkText } from "@/components/retro-blink-text"
 
 interface RetroGamePanelProps {
   metrics: NetworkMetrics[]
@@ -26,19 +29,9 @@ export function RetroGamePanel({
   onToggle
 }: RetroGamePanelProps) {
   const { asciiStyle = "boxed", animationSpeed = 400 } = config
-  const [blinkState, setBlinkState] = useState(true)
+
   const [frame, setFrame] = useState(0)
   const latestMetrics = metrics.length > 0 ? metrics[metrics.length - 1] : null
-
-  // Blinking effect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setBlinkState((prev) => !prev)
-    }, ANIMATION_SPEEDS.blink)
-
-    return () => clearInterval(interval)
-  }, [])
-
 
   // Animation for the ASCII art
   useEffect(() => {
@@ -72,16 +65,18 @@ export function RetroGamePanel({
 
 
 return (
-    <div className={cn("rounded-lg font-mono transition-colors duration-300", className)}>
-      <div className="mb-4 border-2 border-dashed border-primary/30 rounded-lg p-2 bg-background/50 backdrop-blur-sm">
+    <div className={cn("rounded-lg font-mono transition-colors duration-300 bg-muted/40 dark:bg-muted/40 dark:border-primary/30 border-primary/20 [inset_0_0_8px_rgba(139,69,19,0.1)]", className)}>
+      <div className="mb-4 border-2 border-dashed border-primary/30 rounded-lg p-4 ">
         <div className="flex justify-between items-center">
           <div className="flex items-center text-black dark:text-white">
-            <span className={cn("text-xl mr-2 mt-2", blinkState ? "opacity-100" : "opacity-30")}>
-              {isRunning ? "▓▒░" : "░▒▓"}
-            </span>
-            <span className="text-sm font-mono">{isRunning ? "GAME ACTIVE" : "GAME IDLE"}</span>
+            <span className="text-sm ">{isRunning ? "TEST ACTIVE" : "TEST IDLE"}</span>
           </div>
-          <div className="flex items-center space-x-1">
+          <StatusIndicators 
+            metrics={latestMetrics ? { packetLoss: latestMetrics.packetLoss } : undefined}
+            retro={true}
+          />
+       
+          {/* <div className="flex items-center space-x-1">
             {[1, 2, 3, 4, 5].map((i) => (
               <span
                 key={i}
@@ -91,7 +86,7 @@ return (
                 )}
               />
             ))}
-          </div>
+          </div> */}
         </div>
 
         {isRunning && latestMetrics ? (
@@ -103,7 +98,7 @@ return (
                 packetLoss: latestMetrics.packetLoss,
               }}
               config={{
-                asciiStyle: "boxed",
+                asciiStyle: "rpg",
                 animationSpeed: 400,
                 showMetrics: true,
               }}
@@ -112,7 +107,7 @@ return (
           </div>
         ) : (
           <div className="text-xs font-mono mt-1 text-muted-foreground">
-            PRESS START SYSTEM TO BEGIN {blinkState ? "_" : " "}
+            <RetroBlinkText text="PRESS START TEST TO BEGIN" />
           </div>
         )}
       </div>
