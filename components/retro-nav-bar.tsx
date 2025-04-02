@@ -5,7 +5,14 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
 import { cn } from "@/lib/utils"
-import { Github, Linkedin, Twitter, Globe } from "lucide-react"
+import { Github, Linkedin, Twitter, Globe, Menu, X } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { ChevronDown } from "lucide-react"
 
 export function RetroNavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -34,91 +41,113 @@ export function RetroNavBar() {
   ]
 
   return (
-    <nav className="border-b-4 border-primary/30 bg-background/50 backdrop-blur-sm mb-6">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo/Brand */}
-          <Link 
-            href="/"
-            className="font-mono text-lg font-bold tracking-wider uppercase hover:text-primary transition-colors"
-          >
-            Network Metrics
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
+    <nav className="my-6">
+      <div className="container mx-auto px-4 max-w-5xl">
+        <div className="bg-muted/40 dark:bg-muted/40 backdrop-blur-md rounded-lg border-2 border-primary/20 dark:border-primary/30 p-4">
+          <div className="flex items-center justify-between">
+            {/* Logo/Brand */}
             <Link 
-              href="/about"
-              className="h-10 px-4 flex items-center justify-center font-bold tracking-wide uppercase border-2 border-primary/30 rounded-md 
-                       hover:bg-primary/10 transition-colors"
+              href="/"
+              className="font-mono text-xl font-bold tracking-wider uppercase flex items-center gap-2"
             >
-              About
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              Ping Test
             </Link>
 
-            {/* Social Links */}
-            <div className="flex items-center space-x-2">
-              {socialLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="h-10 w-10 flex items-center justify-center border-2 border-primary/30 rounded-md 
-                           hover:bg-primary/10 transition-colors"
-                  aria-label={link.label}
-                >
-                  {link.icon}
-                </a>
-              ))}
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-3">
+              {/* Tools Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="h-8 px-3 font-bold tracking-wider uppercase flex items-center gap-1"
+                  >
+                    Tools <ChevronDown className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuItem>
+                    <Link href="/about">About</Link>
+                  </DropdownMenuItem>
+                  {/* Add more tools here */}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Social Links */}
+              <div className="flex items-center gap-1 pl-2 border-l-2 border-primary/20">
+                {socialLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="h-8 w-8 flex items-center justify-center
+                             hover:bg-primary/10 rounded-md transition-all duration-300"
+                    aria-label={link.label}
+                  >
+                    {link.icon}
+                  </a>
+                ))}
+                <div className="pl-1 border-l border-primary/20">
+                  <ModeToggle />
+                </div>
+              </div>
             </div>
 
-            <ModeToggle />
+            {/* Mobile Menu Button */}
+            <div className="md:hidden flex items-center gap-2">
+              <ModeToggle />
+              <Button
+                className="h-10 w-10 flex items-center justify-center"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                variant="ghost"
+              >
+                {isMenuOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
+              </Button>
+            </div>
           </div>
 
-          {/* Mobile Menu Button */}
-          <Button
-            className="md:hidden h-10 w-10 p-2 border-2 border-primary/30"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            variant="outline"
-          >
-            <span className={cn(
-              "block w-5 h-0.5 bg-primary transition-all duration-300",
-              isMenuOpen && "rotate-45 translate-y-1"
-            )}></span>
-            <span className={cn(
-              "block w-5 h-0.5 bg-primary mt-1 transition-all duration-300",
-              isMenuOpen && "-rotate-45 -translate-y-0.5"
-            )}></span>
-          </Button>
-        </div>
+          {/* Mobile Menu */}
+          <div className={cn(
+            "md:hidden transition-all duration-300 overflow-hidden",
+            isMenuOpen ? "max-h-96 mt-4" : "max-h-0"
+          )}>
+            <div className="grid gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="w-full justify-between">
+                    Tools <ChevronDown className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-full">
+                  <DropdownMenuItem>
+                    <Link href="/about" className="w-full">About</Link>
+                  </DropdownMenuItem>
+                  {/* Add more tools here */}
+                </DropdownMenuContent>
+              </DropdownMenu>
 
-        {/* Mobile Menu */}
-        <div className={cn(
-          "md:hidden transition-all duration-300 overflow-hidden",
-          isMenuOpen ? "max-h-96 pb-4" : "max-h-0"
-        )}>
-          <Link 
-            href="/about"
-            className="block py-2 px-4 font-bold tracking-wide uppercase border-2 border-primary/30 rounded-md mb-2
-                     hover:bg-primary/10 transition-colors"
-          >
-            About
-          </Link>
-
-          <div className="grid grid-cols-4 gap-2">
-            {socialLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="h-12 flex flex-col items-center justify-center border-2 border-primary/30 rounded-md
-                         hover:bg-primary/10 transition-colors"
-              >
-                {link.icon}
-                <span className="text-xs mt-1">{link.label}</span>
-              </a>
-            ))}
+              <div className="grid grid-cols-4 gap-2">
+                {socialLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col items-center justify-center p-2
+                             hover:bg-primary/10 rounded-md transition-all duration-300"
+                  >
+                    {link.icon}
+                    <span className="text-xs mt-1">{link.label}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

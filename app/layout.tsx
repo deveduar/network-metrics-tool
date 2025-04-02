@@ -13,9 +13,10 @@ export default function RootLayout({
       <body className="min-h-screen bg-background antialiased" suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange
+          storageKey="network-metrics-theme"
         >
           <RetroNavBar />
           {children}
