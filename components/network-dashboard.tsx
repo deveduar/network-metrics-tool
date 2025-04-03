@@ -290,21 +290,11 @@ export function NetworkDashboard() {
     <div className="">
 
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-1 ">
    {/* Control Panel Section */}
    <Card className="backdrop-blur-md border-0">
         <CardContent className="p-0">
-        
-        <RetroGamePanel 
-          metrics={metrics}
-          isRunning={isRunning}
-          onToggle={handleToggleMeasurement}
-          config={{
-            asciiStyle: "rpg",
-            animationSpeed: 400
-          }}
-        />
-       <RetroControlPanel 
+        <RetroControlPanel 
           isRunning={isRunning} 
           onToggle={handleToggleMeasurement}
           onReset={handleReset}
@@ -312,63 +302,26 @@ export function NetworkDashboard() {
             packetLoss: metrics[metrics.length - 1].packetLoss
           } : undefined}
         />
-
-
-        {/* <StatusIndicators 
-          metrics={metrics.length > 0 ? {
-            packetLoss: metrics[metrics.length - 1].packetLoss
-          } : undefined}
-        /> */}
-        </CardContent>
-      </Card>
-        {/* Chart Section */}
-        <Card className="p-0 backdrop-blur-md  border-0 md:col-span-2">
-        <NetworkChart 
-          metrics={metrics} 
-          isRunning={isRunning} 
+        {/* <RetroGamePanel 
+          metrics={metrics}
+          isRunning={isRunning}
           onToggle={handleToggleMeasurement}
-        />
+          config={{
+            asciiStyle: "rpg",
+            animationSpeed: 400
+          }}
+        /> */}
+
+        </CardContent>
         </Card>
-
-        {/* Right Column */}
-        <div className="space-y-6">
-
-          {/* <Card className="p-4 backdrop-blur-md border border-primary/10">
-            <MetricsPanel metrics={metrics} />
-          </Card> */}
-
-          {/* Retro Game Panel */}
-          
-
-       
-        </div>
-    
-
-        {/* Añadimos los nuevos componentes */}
-        {/* {metrics.length > 0 && (
-          <>
-              <ConnectionMood
-                metrics={{
-                  ping: metrics[metrics.length - 1].ping,
-                  jitter: metrics[metrics.length - 1].jitter,
-                  packetLoss: metrics[metrics.length - 1].packetLoss,
-                }}
-                config={{
-                  asciiStyle: "rpg",
-                  animationSpeed: 500,
-                  showMetrics: true,
-                }}
-              />
-              <HappinessMeter
-                ping={metrics[metrics.length - 1].ping}
-                jitter={metrics[metrics.length - 1].jitter}
-                packetLoss={metrics[metrics.length - 1].packetLoss}
-                size="sm"
-                animationSpeed={500}
-              />
-           
-          </>
-        )} */}
+          {/* Chart Section */}
+          <Card className="p-0 backdrop-blur-md  border-0 md:col-span-2">
+          <NetworkChart 
+            metrics={metrics} 
+            isRunning={isRunning} 
+            onToggle={handleToggleMeasurement}
+          />
+          </Card>
       </div>
     </div>
 
