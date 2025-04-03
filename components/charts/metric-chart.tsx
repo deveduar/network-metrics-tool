@@ -43,7 +43,7 @@ interface MetricChartProps {
 export function MetricChart({ type, metrics, isRunning, onToggle }: MetricChartProps) {
   if (metrics.length === 0 || (!isRunning && metrics.length > 0)) {
     return (
-      <div className="flex flex-col items-center justify-center h-[300px] space-y-4 cursor-pointer" onClick={onToggle}>
+      <div className="flex flex-col items-center justify-center space-y-4 cursor-pointer rounded-lg bg-muted/40 dark:bg-muted/40 border-2 border-dashed border-primary/30" onClick={onToggle}>
         <EmptyState metrics={metrics} isRunning={isRunning} />
       </div>
     )

@@ -2,7 +2,7 @@ import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { NetworkMetrics } from "@/types/network"
 
-import { getMetricColor, getMetricStatus } from "./metric-colors"
+import { getMetricBorderColor, getMetricStatus } from "./metric-colors"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -26,28 +26,28 @@ export const getSessionSummary = (metrics: NetworkMetrics[]) => {
   const jitterStatus = getMetricStatus.jitter(avgJitter)
   const packetLossStatus = getMetricStatus.packetLoss(avgPacketLoss)
 
-  const pingColor = getMetricColor.ping(avgPing)
-  const jitterColor = getMetricColor.jitter(avgJitter)
-  const packetLossColor = getMetricColor.packetLoss(avgPacketLoss)
+  const pingColor = getMetricBorderColor.ping(avgPing)
+  const jitterColor = getMetricBorderColor.jitter(avgJitter)
+  const packetLossColor = getMetricBorderColor.packetLoss(avgPacketLoss)
 
   // Overall connection quality (use the worst status)
   const getOverallQuality = () => {
-    if (pingStatus.includes('Critical') || jitterStatus.includes('Critical') || packetLossStatus.includes('Critical')) {
-      return { status: '🔴 Critical Connection', color: 'text-[#ff1744] dark:text-[#ff1744]' }
+    if (pingStatus === 'Critical' || jitterStatus === 'Critical' || packetLossStatus === 'Critical') {
+      return { status: 'Critical Connection', color: '#ff1744' }
     }
-    if (pingStatus.includes('Very High') || jitterStatus.includes('Very High') || packetLossStatus.includes('Very High')) {
-      return { status: '🟠 Poor Connection', color: 'text-[#ff4081] dark:text-[#ff4081]' }
+    if (pingStatus === 'Very High' || jitterStatus === 'Very High' || packetLossStatus === 'Very High') {
+      return { status: 'Poor Connection', color: '#ff4081' }
     }
-    if (pingStatus.includes('High') || jitterStatus.includes('High') || packetLossStatus.includes('High')) {
-      return { status: '🟡 Unstable Connection', color: 'text-[#ff9100] dark:text-[#ff9100]' }
+    if (pingStatus === 'High' || jitterStatus === 'High' || packetLossStatus === 'High') {
+      return { status: 'Unstable Connection', color: '#ff9100' }
     }
-    if (pingStatus.includes('Warning') || jitterStatus.includes('Warning') || packetLossStatus.includes('Warning')) {
-      return { status: '🟡 Fair Connection', color: 'text-[#ffea00] dark:text-[#ffea00]' }
+    if (pingStatus === 'Warning' || jitterStatus === 'Warning' || packetLossStatus === 'Warning') {
+      return { status: 'Fair Connection', color: '#ffea00' }
     }
-    if (pingStatus.includes('Fair') || jitterStatus.includes('Fair')) {
-      return { status: '🟢 Good Connection', color: 'text-[#00e676] dark:text-[#00e676]' }
+    if (pingStatus === 'Fair' || jitterStatus === 'Fair') {
+      return { status: 'Good Connection', color: '#00e676' }
     }
-    return { status: '✨ Optimal Connection', color: 'text-[#00fff5] dark:text-[#00fff5]' }
+    return { status: 'Optimal Connection', color: '#00fff5' }
   }
 
   const quality = getOverallQuality()

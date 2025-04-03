@@ -28,14 +28,14 @@ export function NetworkChart({ metrics, isRunning, onToggle }: NetworkChartProps
           <MetricChart type="quality" metrics={metrics} isRunning={isRunning} onToggle={onToggle} />
         )}
       </div>
-      <RetroGamePanel 
+      {/* <RetroGamePanel 
           metrics={metrics}
           isRunning={isRunning}
           config={{
             asciiStyle: "rpg",
             animationSpeed: 400
           }}
-        />
+        /> */}
       {isRunning && (
         <div className="flex gap-2">
           <button

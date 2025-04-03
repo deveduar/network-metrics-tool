@@ -23,32 +23,50 @@ export function EmptyState({ isRunning, metrics }: EmptyStateProps) {
     const summary = getSessionSummary(metrics)
 
     return (
-        <div className="text-muted-foreground text-center space-y-4">
+      <div className="rounded-lg font-mono transition-colors duration-300 w-full  ">
+        <div className="mb-4 p-4">
           {summary ? (
             <>
-              <div className={cn("text-lg font-medium", summary.quality.color)}>
+              <div 
+                className="text-lg font-bold uppercase text-center p-2 rounded-md"
+                style={{ 
+                  color: summary.quality.color,
+                  border: `2px solid ${summary.quality.color}`,
+                  backgroundColor: `${summary.quality.color}10`
+                }}
+              >
                 {summary.quality.status}
               </div>
-              <div className="grid grid-cols-2 gap-4 max-w-[300px] mx-auto text-sm">
-                <div className="space-y-2">
-                  <p>Ping: <span className={cn("font-mono", summary.pingColor.replace('bg-', 'text-').replace('/80', '').replace('dark:', ''))}>{summary.avgPing}ms</span></p>
-                  <p>Jitter: <span className={cn("font-mono", summary.jitterColor.replace('bg-', 'text-').replace('/80', '').replace('dark:', ''))}>{summary.avgJitter}ms</span></p>
-                  <p>Packet Loss: <span className={cn("font-mono", summary.packetLossColor.replace('bg-', 'text-').replace('/80', '').replace('dark:', ''))}>{summary.avgPacketLoss}%</span></p>
+              <div className="grid grid-cols-5 gap-4 mx-auto mt-4 text-sm text-black dark:text-white">
+              <div className="space-y-2">
+                  <p>Ping: <span className="inline-flex items-center gap-1">
+                    <span className={`inline-block w-2 h-2 rounded-full`} style={{ backgroundColor: summary.pingColor }} />
+                    <span className="font-mono">{summary.avgPing}ms</span>
+                  </span></p>
+                  <p>Jitter: <span className="inline-flex items-center gap-1">
+                    <span className={`inline-block w-2 h-2 rounded-full`} style={{ backgroundColor: summary.jitterColor }} />
+                    <span className="font-mono">{summary.avgJitter}ms</span>
+                  </span></p>
+                  <p>Packet Loss: <span className="inline-flex items-center gap-1">
+                    <span className={`inline-block w-2 h-2 rounded-full`} style={{ backgroundColor: summary.packetLossColor }} />
+                    <span className="font-mono">{summary.avgPacketLoss}%</span>
+                  </span></p>
                 </div>
                 <div className="space-y-2">
                   <p>Duration: <span className="font-mono text-primary">{summary.duration}</span></p>
                   <p>Samples: <span className="font-mono text-primary">{summary.samples}</span></p>
                 </div>
               </div>
-              <p className="text-xs mt-4">
-                <RetroBlinkText text="Click to start new measurement" />
-              </p>
+              <div className="text-xs mt-4 text-muted-foreground">
+                <RetroBlinkText text="PRESS START TEST TO BEGIN NEW MEASUREMENT" />
+              </div>
             </>
           ) : (
-            <p className="text-sm">
-              <RetroBlinkText text="Click here or press START to begin measurement" />
-            </p>
+            <div className="text-xs font-mono text-muted-foreground">
+              <RetroBlinkText text="PRESS START TEST TO BEGIN" />
+            </div>
           )}
         </div>
-      )
+      </div>
+  )
     }
