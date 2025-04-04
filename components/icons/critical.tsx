@@ -1,12 +1,18 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
- "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="500.000000pt" height="500.000000pt" viewBox="0 0 500.000000 500.000000"
- preserveAspectRatio="xMidYMid meet">
-
-<g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
-fill="#000000" stroke="none">
+export function CriticalCartoon({ className }: { className?: string }) {
+    return (
+        <div className={className}>
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 500 500"
+          preserveAspectRatio="xMidYMid meet"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g
+            transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
+            fill="currentColor"
+            stroke="none"
+          >
 <path d="M3465 4629 c-30 -36 -29 -39 23 -117 181 -266 222 -613 110 -931 -37
 -105 -57 -145 -119 -239 -47 -71 -48 -75 -34 -102 31 -59 76 -51 133 23 157
 205 242 515 212 774 -26 222 -86 387 -198 548 -60 85 -85 94 -127 44z"/>
@@ -183,3 +189,6 @@ c1 -109 0 -208 -3 -221z m85 353 c0 -8 -4 -17 -10 -20 -6 -4 -10 5 -10 20 0
 63 0 78 3 61 10 -13 5 -40 23 -60 39 -44 36 -53 37 -89 5z"/>
 </g>
 </svg>
+</div>
+  )
+}

@@ -1,12 +1,19 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
- "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="500.000000pt" height="500.000000pt" viewBox="0 0 500.000000 500.000000"
- preserveAspectRatio="xMidYMid meet">
 
-<g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
-fill="#000000" stroke="none">
+export function PoorCartoon({ className }: { className?: string }) {
+    return (
+      <div className={className}>
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 500 500"
+          preserveAspectRatio="xMidYMid meet"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g
+            transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
+            fill="currentColor"
+            stroke="none"
+          >
 <path d="M1175 4705 c-43 -42 -24 -106 37 -128 9 -3 96 -165 204 -379 103
 -205 207 -408 230 -452 24 -43 44 -84 43 -90 0 -6 -32 -33 -70 -61 -259 -185
 -424 -489 -460 -848 -11 -112 -6 -276 11 -369 9 -45 6 -53 -45 -160 -154 -323
@@ -133,3 +140,6 @@ c28 -19 52 -38 52 -42 0 -4 -46 -25 -102 -47 -57 -23 -119 -48 -139 -56 -34
 1z"/>
 </g>
 </svg>
+</div>
+  )
+}

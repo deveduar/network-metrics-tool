@@ -1,12 +1,20 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
- "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="500.000000pt" height="500.000000pt" viewBox="0 0 500.000000 500.000000"
- preserveAspectRatio="xMidYMid meet">
 
-<g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
-fill="#000000" stroke="none">
+
+export function FairCartoon({ className }: { className?: string }) {
+    return (
+      <div className={className}>
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 500 500"
+          preserveAspectRatio="xMidYMid meet"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g
+            transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
+            fill="currentColor"
+            stroke="none"
+          >
 <path d="M2372 4278 c-37 -47 -94 -205 -117 -325 -18 -91 -20 -337 -4 -415 18
 -92 62 -219 79 -228 9 -5 22 -5 30 0 11 7 8 26 -18 107 -78 241 -60 528 49
 776 24 54 28 71 18 83 -14 17 -24 18 -37 2z"/>
@@ -175,3 +183,6 @@ m15 -89 c26 -4 47 -11 47 -16 0 -6 -14 -8 -32 -5 -18 3 -54 8 -80 11 -27 4
 <path d="M3110 532 c0 -11 48 -13 55 -2 4 6 -7 10 -24 10 -17 0 -31 -4 -31 -8z"/>
 </g>
 </svg>
+</div>
+  )
+}

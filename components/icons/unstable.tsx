@@ -1,12 +1,19 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
- "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="500.000000pt" height="500.000000pt" viewBox="0 0 500.000000 500.000000"
- preserveAspectRatio="xMidYMid meet">
 
-<g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
-fill="#000000" stroke="none">
+export function UnstableCartoon({ className }: { className?: string }) {
+    return (
+      <div className={className}>
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 500 500"
+          preserveAspectRatio="xMidYMid meet"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g
+            transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
+            fill="currentColor"
+            stroke="none"
+          >
 <path d="M3697 4570 c-34 -27 -44 -78 -23 -118 11 -20 16 -57 16 -107 l0 -75
 -104 0 c-115 0 -156 -10 -156 -38 0 -36 20 -42 142 -42 l118 0 0 -635 c0 -567
 -2 -635 -15 -635 -29 0 -75 -30 -90 -60 -21 -41 -19 -109 5 -145 11 -16 20
@@ -131,3 +138,6 @@ m-1100 333 c2 -8 -6 -13 -22 -13 -26 0 -40 12 -29 24 11 11 46 2 51 -11z m74
 -41 0 -71 -4 -71 -10z"/>
 </g>
 </svg>
+</div>
+  )
+}

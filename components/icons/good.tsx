@@ -1,12 +1,20 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
- "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="500.000000pt" height="500.000000pt" viewBox="0 0 500.000000 500.000000"
- preserveAspectRatio="xMidYMid meet">
 
-<g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
-fill="#000000" stroke="none">
+
+export function GoodCartoon({ className }: { className?: string }) {
+    return (
+      <div className={className}>
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 500 500"
+          preserveAspectRatio="xMidYMid meet"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g
+            transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
+            fill="currentColor"
+            stroke="none"
+          >
 <path d="M3776 4604 c-20 -19 -20 -44 -2 -69 8 -11 12 -33 10 -50 -2 -16 -22
 -164 -44 -327 -22 -164 -44 -317 -49 -340 -5 -24 -19 -122 -31 -218 -28 -230
 -25 -219 -61 -227 -19 -4 -38 -18 -52 -38 l-21 -32 -66 23 c-222 77 -512 34
@@ -176,3 +184,6 @@ m86 20 c5 -10 7 -10 12 0 10 21 26 13 22 -10 -2 -18 -11 -24 -36 -26 -41 -4
 9 281 20 9 9 0 11 -20 4z"/>
 </g>
 </svg>
+</div>
+  )
+}
