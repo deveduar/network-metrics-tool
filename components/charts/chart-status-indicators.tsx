@@ -15,7 +15,7 @@ interface ChartStatusIndicatorsProps {
 export function ChartStatusIndicators({ statuses, metrics, className }: ChartStatusIndicatorsProps) {
   return (
     <div className="flex-end justify-between text-xs">
-      <div className={cn("flex gap-4  backdrop-blur-sm px-4 py-2 rounded-lg border-2 border-dashed border-primary/30 font-mono", className)}>
+      <div className={cn("flex gap-4  backdrop-blur-sm px-4 py-2 rounded-lg font-mono", className)}>
         {Object.entries(statuses).map(([key, value]) => {
           const metricValue = key === 'ping' ? metrics.ping :
           key === 'jitter' ? metrics.jitter :

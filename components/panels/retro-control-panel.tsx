@@ -22,7 +22,7 @@ export function RetroControlPanel({
 }: RetroControlPanelProps) {
 
   return (
-    <div className={cn("mb-6 font-mono", className)}>
+    <div className={cn(" font-mono", className)}>
       <div className="space-y-4">
         <div className="flex gap-2">
           <Button

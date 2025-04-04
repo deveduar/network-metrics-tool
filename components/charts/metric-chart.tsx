@@ -43,7 +43,7 @@ interface MetricChartProps {
 export function MetricChart({ type, metrics, isRunning, onToggle }: MetricChartProps) {
   if (metrics.length === 0 || (!isRunning && metrics.length > 0)) {
     return (
-      <div className="flex flex-col items-center justify-center space-y-4 cursor-pointer rounded-lg bg-muted/40 dark:bg-muted/40 border-2 border-dashed border-primary/30" onClick={onToggle}>
+      <div className="h-full w-full flex items-center cursor-pointer" onClick={onToggle}>
         <EmptyState metrics={metrics} isRunning={isRunning} />
       </div>
     )
@@ -143,14 +143,14 @@ export function MetricChart({ type, metrics, isRunning, onToggle }: MetricChartP
 }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col h-full w-full p-4 space-y-6">
       {latestMetrics && (
         <ChartStatusIndicators 
           statuses={config.statuses}
           metrics={latestMetrics}
         />
       )}
-    <div className="h-[300px] w-full relative rounded-lg p-4  backdrop-blur-sm font-mono">
+    <div className="h-full w-full relative rounded-lg  backdrop-blur-sm font-mono">
       {/* Y-axis labels */}
       <div className="absolute left-0 top-0 bottom-0 w-12 flex flex-col justify-between text-xs text-foreground/70">
         <span className="bg-background/80 px-2 py-1 rounded-sm border border-primary/20">
@@ -177,7 +177,7 @@ export function MetricChart({ type, metrics, isRunning, onToggle }: MetricChartP
 
     </div>
           {/* Legend */}
-          <div className="flex justify-center gap-4 text-xs py-4">
+          <div className="flex justify-center gap-4 text-xs ">
         {type === "latency" ? (
           <>
             <div className="flex items-center gap-2 bg-background/80 px-3 py-1 rounded-sm border border-primary/20">

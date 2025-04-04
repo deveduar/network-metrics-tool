@@ -65,7 +65,7 @@ export function RetroGamePanel({
 
 
 return (
-    <div className={cn("rounded-lg font-mono transition-colors duration-300 bg-muted/40 dark:bg-muted/40 dark:border-primary/30 border-primary/20 [inset_0_0_8px_rgba(139,69,19,0.1)]", className)}>
+    <div className={cn("rounded-lg font-mono transition-colors duration-300 bg-accent dark:bg-muted/40 dark:border-primary/30 border-primary/20 [inset_0_0_8px_rgba(139,69,19,0.1)]", className)}>
       <div className="mb-4 border-2 border-dashed border-primary/30 rounded-lg p-4 ">
         <div className="flex justify-between items-center">
           <div className="flex items-center text-black dark:text-white">
@@ -75,21 +75,9 @@ return (
             metrics={latestMetrics ? { packetLoss: latestMetrics.packetLoss } : undefined}
             retro={true}
           />
-       
-          {/* <div className="flex items-center space-x-1">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <span
-                key={i}
-                className={cn(
-                  "inline-block w-2 h-4 border border-primary/50",
-                  isRunning && i <= Math.floor(Math.random() * 5) + 1 ? "bg-primary" : "bg-transparent",
-                )}
-              />
-            ))}
-          </div> */}
         </div>
 
-        {isRunning && latestMetrics ? (
+        {/* {isRunning && latestMetrics ? (
           <div className="mt-4 space-y-2 font-mono text-xs">
             <ConnectionMood
               metrics={{
@@ -109,7 +97,7 @@ return (
           <div className="text-xs font-mono mt-1 text-muted-foreground">
             <RetroBlinkText text="PRESS START TEST TO BEGIN" />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   )

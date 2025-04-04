@@ -16,28 +16,9 @@ export function NetworkChart({ metrics, isRunning, onToggle }: NetworkChartProps
   const [activeTab, setActiveTab] = useState("latency")
 
   return (
-    <div className="w-full font-mono  p-6 rounded-lg  border-2 dark:border-primary/30 border-primary/20 [inset_0_0_8px_rgba(139,69,19,0.1)]
-    bg-muted/40 dark:bg-muted/40
-    ">
-      <div className="space-y-4 ">
-        {activeTab === "latency" && (
-          <MetricChart type="latency" metrics={metrics} isRunning={isRunning} onToggle={onToggle} />
-        )}
-        
-        {activeTab === "quality" && (
-          <MetricChart type="quality" metrics={metrics} isRunning={isRunning} onToggle={onToggle} />
-        )}
-      </div>
-      {/* <RetroGamePanel 
-          metrics={metrics}
-          isRunning={isRunning}
-          config={{
-            asciiStyle: "rpg",
-            animationSpeed: 400
-          }}
-        /> */}
-      {isRunning && (
-        <div className="flex gap-2">
+    <div className="h-[565px] border-2 border-dashed border-primary/30 rounded-lg bg-accent dark:bg-muted/40 flex flex-col">
+        {isRunning && (
+        <div className="flex gap-2 p-4">
           <button
             onClick={() => setActiveTab("latency")}
             className={cn(
@@ -70,6 +51,24 @@ export function NetworkChart({ metrics, isRunning, onToggle }: NetworkChartProps
         </button>
         </div>
       )}
+      <div className="flex-1 flex">
+        {activeTab === "latency" && (
+          <MetricChart type="latency" metrics={metrics} isRunning={isRunning} onToggle={onToggle} />
+        )}
+        
+        {activeTab === "quality" && (
+          <MetricChart type="quality" metrics={metrics} isRunning={isRunning} onToggle={onToggle} />
+        )}
+      </div>
+      {/* <RetroGamePanel 
+          metrics={metrics}
+          isRunning={isRunning}
+          config={{
+            asciiStyle: "rpg",
+            animationSpeed: 400
+          }}
+        /> */}
+
     </div>
   )
 }

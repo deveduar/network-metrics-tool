@@ -286,23 +286,16 @@ export function NetworkDashboard() {
   };
 
   return (
-    <div className="space-y-6">
     <div className="">
+    <div className="w-full font-mono  p-4 rounded-lg  border-2 dark:border-primary/30 border-primary/20 [inset_0_0_8px_rgba(139,69,19,0.1)]
+    bg-muted/40 dark:bg-muted/40 mb-6">
 
 
-      <div className="grid grid-cols-1 md:grid-cols-1 ">
+      <div className="grid grid-cols-1 md:grid-cols-1 space-y-6">
    {/* Control Panel Section */}
-   <Card className="backdrop-blur-md border-0">
-        <CardContent className="p-0">
-        <RetroControlPanel 
-          isRunning={isRunning} 
-          onToggle={handleToggleMeasurement}
-          onReset={handleReset}
-          metrics={metrics.length > 0 ? {
-            packetLoss: metrics[metrics.length - 1].packetLoss
-          } : undefined}
-        />
-        {/* <RetroGamePanel 
+   <Card className=" border-0 bg-inherit  ">
+        <CardContent className="p-0 space-y-6 ">
+        <RetroGamePanel 
           metrics={metrics}
           isRunning={isRunning}
           onToggle={handleToggleMeasurement}
@@ -310,19 +303,29 @@ export function NetworkDashboard() {
             asciiStyle: "rpg",
             animationSpeed: 400
           }}
-        /> */}
-
-        </CardContent>
-        </Card>
-          {/* Chart Section */}
-          <Card className="p-0 backdrop-blur-md  border-0 md:col-span-2">
+        />
+        {/* Chart Section */}
+       
           <NetworkChart 
             metrics={metrics} 
             isRunning={isRunning} 
             onToggle={handleToggleMeasurement}
           />
-          </Card>
+        
+          <RetroControlPanel 
+          isRunning={isRunning} 
+          onToggle={handleToggleMeasurement}
+          onReset={handleReset}
+          metrics={metrics.length > 0 ? {
+            packetLoss: metrics[metrics.length - 1].packetLoss
+          } : undefined}
+        />
+        </CardContent>
+
+    </Card>
+
       </div>
+
     </div>
 
       {alerts.map((alert) => (
