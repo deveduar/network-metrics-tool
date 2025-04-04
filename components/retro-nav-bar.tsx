@@ -47,7 +47,8 @@ export function RetroNavBar() {
 
   return (
     <nav className="my-6">
-      <div className="container mx-auto px-4 max-w-5xl">
+      {/* mx-auto px-4 max-w-5xl */}
+      <div className="container ">
         <div className="bg-muted/40 dark:bg-muted/40 backdrop-blur-md rounded-lg border-2 border-primary/20 dark:border-primary/30 p-4">
           <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

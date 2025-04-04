@@ -24,17 +24,39 @@ export function RetroControlPanel({
   return (
     <div className={cn(" font-mono", className)}>
       <div className="space-y-4">
-        <div className="flex gap-2">
-          <Button
+      <div className="flex gap-2 max-w-xl mx-auto">
+        <Button
             onClick={onToggle}
             className={cn(
-              "flex-1 h-12 text-lg font-bold tracking-wider uppercase shadow-[inset_0_-4px_0_rgba(0,0,0,0.3)] transition-all duration-300",
-              "border-4 hover:translate-y-[2px] hover:shadow-[inset_0_-2px_0_rgba(0,0,0,0.3)] active:translate-y-[4px] active:shadow-none",
+              "flex-1 h-12 text-lg font-bold tracking-wider uppercase",
+              "rounded-md relative group transition-all duration-300",
+              "border-2",
               isRunning
-                ? "bg-destructive border-destructive/80 hover:bg-destructive/90 dark:text-slate-300"
-                : "bg-primary border-primary/80 hover:bg-primary/90"
+              ? [
+                "border-rose-400/50 dark:border-rose-300/30",
+                "bg-rose-50/80 dark:bg-rose-900/20",
+                "text-rose-700 dark:text-rose-300",
+                "shadow-[inset_0_-4px_0_rgba(244,63,94,0.3)]",
+                "dark:shadow-[inset_0_-4px_0_rgba(244,63,94,0.2)]",
+                "hover:translate-y-[2px]",
+                "hover:bg-rose-100/80 dark:hover:bg-rose-900/30",
+                "hover:shadow-[inset_0_-2px_0_rgba(244,63,94,0.3)]",
+                "dark:hover:shadow-[inset_0_-2px_0_rgba(244,63,94,0.2)]",
+                "active:translate-y-[4px] active:shadow-none",
+              ]
+              : [
+                "border-emerald-400/50 dark:border-emerald-300/30",
+                "bg-emerald-50/80 dark:bg-emerald-900/20",
+                "text-emerald-700 dark:text-emerald-300",
+                "shadow-[inset_0_-4px_0_rgba(16,185,129,0.3)]",
+                "dark:shadow-[inset_0_-4px_0_rgba(16,185,129,0.2)]",
+                "hover:translate-y-[2px]",
+                "hover:bg-emerald-100/80 dark:hover:bg-emerald-900/30",
+                "hover:shadow-[inset_0_-2px_0_rgba(16,185,129,0.3)]",
+                "dark:hover:shadow-[inset_0_-2px_0_rgba(16,185,129,0.2)]",
+                "active:translate-y-[4px] active:shadow-none",
+              ]
             )}
-            aria-label={isRunning ? "Stop measurement" : "Start measurement"}
           >
             {isRunning ? (
               <>
@@ -53,10 +75,18 @@ export function RetroControlPanel({
             <Button
               onClick={onReset}
               className={cn(
-                "h-12 px-4 font-bold tracking-wider uppercase shadow-[inset_0_-4px_0_rgba(0,0,0,0.3)] transition-all duration-300 bg-background",
-                "border-4 border-yellow-300/80 dark:border-yellow-400/80 hover:border-yellow-400/90",
-                "bg-yellow-300 dark:bg-yellow-400 hover:bg-yellow-300/90 text-black",
-                "hover:translate-y-[2px] hover:shadow-[inset_0_-2px_0_rgba(0,0,0,0.3)]",
+                "h-12 px-4 font-bold tracking-wider uppercase",
+                "rounded-md relative group transition-all duration-300",
+                "border-2",
+                "border-zinc-400/30 dark:border-zinc-300/20",
+                "bg-zinc-50/50 dark:bg-zinc-900/10",
+                "text-zinc-600 dark:text-zinc-400",
+                "shadow-[inset_0_-4px_0_rgba(161,161,170,0.3)]",
+                "dark:shadow-[inset_0_-4px_0_rgba(161,161,170,0.2)]",
+                "hover:translate-y-[2px]",
+                "hover:bg-zinc-100/50 dark:hover:bg-zinc-900/20",
+                "hover:shadow-[inset_0_-2px_0_rgba(161,161,170,0.3)]",
+                "dark:hover:shadow-[inset_0_-2px_0_rgba(161,161,170,0.2)]",
                 "active:translate-y-[4px] active:shadow-none"
               )}
               aria-label="Reset measurements"
