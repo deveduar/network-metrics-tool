@@ -5,7 +5,7 @@ import { useNetworkStore } from "@/stores/network-store"
 import { NetworkChart } from "@/components/charts/network-chart"
 import { ControlPanel } from "@/components/panels/control-panel"
 import { MetricsPanel } from "@/components/panels/metrics-panel"
-import { AlertToast } from "@/components/ui/alert-toast"
+import { AlertToast } from "@/components/alert-toast"
 import { Card, CardContent } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import ConnectionMood from "@/components/connection-mood"
@@ -17,200 +17,26 @@ import { RetroGamePanel } from "@/components/panels/retro-game-panel"
 export function NetworkDashboard() {
   const { toast } = useToast()
   const [worker, setWorker] = useState<Worker | null>(null)
-  const { metrics, isRunning, alerts, startMeasurement, stopMeasurement, updateMetrics, addAlert, clearAlerts } =
-    useNetworkStore()
+  const { 
+    metrics, 
+    isRunning, 
+    alerts, 
+    startMeasurement, 
+    stopMeasurement, 
+    updateMetrics, 
+    addAlert, 
+    clearAlerts,
+    clearMetrics  // Add clearMetrics to the destructured values
+  } = useNetworkStore()
+    const [isPaused, setIsPaused] = useState(false)
+    const [isResetting, setIsResetting] = useState(false)
+
 
   // Initialize web worker
   useEffect(() => {
     if (typeof window !== "undefined") {
       // Create a blob URL for the worker code
-      const workerCode = `
-    // Network measurement worker
-    // This runs in a separate thread to avoid blocking the UI
-    
-    // Define the test endpoints for ping measurements
-    const PING_ENDPOINTS = [
-      'https://www.google.com',
-      'https://www.cloudflare.com',
-      'https://www.microsoft.com',
-      'https://www.amazon.com',
-      'https://www.apple.com'
-    ]
-    
-    // Constants for measurements
-    const MAX_STORED_VALUES = 30 // Maximum number of values to store for calculations
-    
-    // State variables
-    let isRunning = false
-    let intervalId = null
-    let pings = 0
-    let pongs = 0
-    let pingValues = []
-    let jitterValues = []
-    let prevTimestamp = null
-    
-    // Initialize
-    self.onmessage = (event) => {
-      const { command } = event.data
-      
-      if (command === 'start') {
-        startMeasurements()
-      } else if (command === 'stop') {
-        stopMeasurements()
-      }
-    }
-    
-    function startMeasurements() {
-      if (isRunning) return
-      
-      isRunning = true
-      pings = 0
-      pongs = 0
-      pingValues = []
-      jitterValues = []
-      prevTimestamp = performance.now()
-      
-      // Run immediately once
-      runMeasurements()
-      
-      // Then set interval
-      intervalId = self.setInterval(runMeasurements, 2000)
-    }
-    
-    function stopMeasurements() {
-      if (!isRunning) return
-      
-      isRunning = false
-      
-      if (intervalId !== null) {
-        self.clearInterval(intervalId)
-        intervalId = null
-      }
-    }
-    
-    async function runMeasurements() {
-      try {
-        // Measure ping and jitter
-        const pingResult = await measurePing()
-        const ping = pingResult.ping
-        const jitter = pingResult.jitter
-        const packetLoss = pingResult.packetLoss
-        
-        // Send results back to main thread
-        self.postMessage({
-          type: 'metrics',
-          data: {
-            ping,
-            jitter,
-            download: 0, // Disabled for now
-            upload: 0, // Disabled for now
-            packetLoss,
-            timestamp: Date.now()
-          }
-        })
-      } catch (error) {
-        self.postMessage({
-          type: 'error',
-          data: {
-            message: error instanceof Error ? error.message : 'Unknown error during measurement'
-          }
-        })
-      }
-    }
-    
-    async function measurePing() {
-      // Select a random endpoint for this test
-      const endpoint = PING_ENDPOINTS[Math.floor(Math.random() * PING_ENDPOINTS.length)]
-      
-      const start = performance.now()
-      pings++
-      
-      try {
-        // Use a cache-busting parameter to prevent caching
-        await fetch(\`\${endpoint}?cachebust=\${Date.now()}\`, {
-          method: 'HEAD',
-          mode: 'no-cors',
-          cache: 'no-store'
-        })
-        
-        const end = performance.now()
-        pongs++
-        
-        // Calculate ping time
-        const pingTime = end - start
-        
-        // Add to ping values
-        if (pingValues.length >= MAX_STORED_VALUES) {
-          pingValues.shift()
-        }
-        pingValues.push(pingTime)
-        
-        // Calculate jitter (time difference between pings)
-        const now = performance.now()
-        if (prevTimestamp !== null) {
-          const timeDiff = Math.abs(now - prevTimestamp - 2000) // Difference from expected interval
-          
-          if (jitterValues.length >= MAX_STORED_VALUES) {
-            jitterValues.shift()
-          }
-          jitterValues.push(timeDiff)
-        }
-        prevTimestamp = now
-        
-        // Calculate average ping
-        const avgPing = calculateAverage(pingValues)
-        
-        // Calculate jitter (average deviation)
-        const avgJitter = calculateAverage(jitterValues)
-        
-        // Calculate packet loss
-        const packetLoss = Math.abs(((pongs / Math.max(1, pings)) * 100) - 100)
-        
-        return {
-          ping: avgPing,
-          jitter: avgJitter,
-          packetLoss: packetLoss
-        }
-      } catch (error) {
-        // If fetch fails, count as packet loss
-        const now = performance.now()
-        if (prevTimestamp !== null) {
-          const timeDiff = Math.abs(now - prevTimestamp - 2000)
-          
-          if (jitterValues.length >= MAX_STORED_VALUES) {
-            jitterValues.shift()
-          }
-          jitterValues.push(timeDiff)
-        }
-        prevTimestamp = now
-        
-        // Calculate average ping from existing values or use a high value
-        const avgPing = pingValues.length > 0 ? calculateAverage(pingValues) : 2000
-        
-        // Calculate jitter
-        const avgJitter = calculateAverage(jitterValues)
-        
-        // Calculate packet loss
-        const packetLoss = Math.abs(((pongs / Math.max(1, pings)) * 100) - 100)
-        
-        return {
-          ping: avgPing,
-          jitter: avgJitter,
-          packetLoss: packetLoss
-        }
-      }
-    }
-    
-    function calculateAverage(values) {
-      if (values.length === 0) return 0
-      
-      const sum = values.reduce((acc, val) => acc + val, 0)
-      return sum / values.length
-    }
-  `
-
-      const blob = new Blob([workerCode], { type: "application/javascript" })
-      const networkWorker = new Worker(URL.createObjectURL(blob), { type: "module" })
+      const networkWorker = new Worker('/network.worker.js')
 
       networkWorker.onmessage = (event) => {
         const { type, data } = event.data
@@ -269,6 +95,7 @@ export function NetworkDashboard() {
         worker.postMessage({ command: "stop" })
       }
       stopMeasurement()
+      setIsPaused(false) // Reset pause state when stopping
     } else {
       if (worker) {
         worker.postMessage({ command: "start" })
@@ -277,56 +104,88 @@ export function NetworkDashboard() {
       clearAlerts()
     }
   }
+
+  // Handle pause/resume
+  const handlePauseMeasurement = () => {
+    setIsPaused(prevState => {
+      const newPausedState = !prevState
+      
+      if (worker) {
+        worker.postMessage({ 
+          command: newPausedState ? "pause" : "resume" 
+        })
+      }
+      
+      return newPausedState
+    })
+  }
+
   const handleReset = () => {
     if (worker && isRunning) {
+      setIsResetting(true);  // Set resetting state to true
+      
       worker.postMessage({ command: "stop" });
-      worker.postMessage({ command: "start" });
+      
+      // Clear metrics from the store immediately to reset the charts
+      clearMetrics();
       clearAlerts();
+      
+      // Reduced delay for reset animation
+      setTimeout(() => {
+        worker.postMessage({ command: "start" });
+        setIsPaused(false);
+        
+        // Reduced delay for showing reset state
+        // Just enough time to show the reset animation but not too long
+        setTimeout(() => {
+          setIsResetting(false);
+        }, 800);  // Reduced from 2000ms to 800ms
+      }, 500);  // Reduced from 1000ms to 500ms
     }
   };
 
   return (
     <div className="">
-    <div className="w-full font-mono  p-4 rounded-lg  border-2 dark:border-primary/30 border-primary/20 [inset_0_0_8px_rgba(139,69,19,0.1)]
-    bg-muted/40 dark:bg-muted/40 mb-6">
-
-
-      <div className="grid grid-cols-1 md:grid-cols-1 space-y-6">
-   {/* Control Panel Section */}
-   <Card className=" border-0 bg-inherit  ">
-        <CardContent className="p-0 space-y-6 ">
-        <RetroGamePanel 
-          metrics={metrics}
-          isRunning={isRunning}
-          onToggle={handleToggleMeasurement}
-          config={{
-            asciiStyle: "rpg",
-            animationSpeed: 400
-          }}
-        />
-        {/* Chart Section */}
-       
-          <NetworkChart 
-            metrics={metrics} 
-            isRunning={isRunning} 
-            onToggle={handleToggleMeasurement}
-          />
-        
-          <RetroControlPanel 
-          isRunning={isRunning} 
-          onToggle={handleToggleMeasurement}
-          onReset={handleReset}
-          metrics={metrics.length > 0 ? {
-            packetLoss: metrics[metrics.length - 1].packetLoss
-          } : undefined}
-        />
-        </CardContent>
-
-    </Card>
-
+      <div className="w-full font-mono p-4 rounded-lg border-2 dark:border-primary/30 border-primary/20 [inset_0_0_8px_rgba(139,69,19,0.1)]
+      bg-muted/40 dark:bg-muted/40 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-1 space-y-6">
+          {/* Control Panel Section */}
+          <Card className=" border-0 bg-inherit  ">
+            <CardContent className="p-0 space-y-6 ">
+            <RetroGamePanel 
+                metrics={metrics}
+                isRunning={isRunning}
+                isPaused={isPaused}
+                isResetting={isResetting}  // Pass isResetting prop
+                onToggle={handleToggleMeasurement}
+                config={{
+                  asciiStyle: "rpg",
+                  animationSpeed: 400
+                }}
+              />
+              {/* Chart Section */}
+              <NetworkChart 
+                metrics={metrics} 
+                isRunning={isRunning}
+                isPaused={isPaused}
+                isResetting={isResetting}
+                onToggle={handleToggleMeasurement}
+                onPause={handlePauseMeasurement}  // Add this line
+              />
+              <RetroControlPanel 
+                isRunning={isRunning}
+                isPaused={isPaused}
+                onToggle={handleToggleMeasurement}
+                onPause={handlePauseMeasurement}
+                onReset={handleReset}
+                metrics={metrics.length > 0 ? {
+                  packetLoss: metrics[metrics.length - 1].packetLoss
+                } : undefined}
+              />
+            </CardContent>
+          </Card>
+        </div>
       </div>
-
-    </div>
 
       {alerts.map((alert) => (
         <AlertToast

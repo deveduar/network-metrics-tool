@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { RETRO_ASCII, ANIMATION_SPEEDS } from "../retro-control-constants"
-import { RefreshCw, Play, Square } from "lucide-react"
+import { RefreshCw, Play, Square, Pause } from "lucide-react"
 
 interface RetroControlPanelProps {
   isRunning: boolean
+  isPaused?: boolean
   onToggle: () => void
+  onPause?: () => void
   onReset?: () => void
   className?: string
   metrics?: {
@@ -15,7 +17,9 @@ interface RetroControlPanelProps {
 
 export function RetroControlPanel({ 
   isRunning, 
+  isPaused = false,
   onToggle,
+  onPause,
   onReset, 
   className,
   metrics 
@@ -70,6 +74,45 @@ export function RetroControlPanel({
               </>
             )}
           </Button>
+
+          {isRunning && onPause && (
+            <Button
+              onClick={onPause}
+              className={cn(
+                "h-12 px-4 font-bold tracking-wider uppercase",
+                "rounded-md relative group transition-all duration-300",
+                "border-2",
+                isPaused
+                ? [
+                  "border-blue-400/50 dark:border-blue-300/30",
+                  "bg-blue-50/80 dark:bg-blue-900/20",
+                  "text-blue-700 dark:text-blue-300",
+                  "shadow-[inset_0_-4px_0_rgba(59,130,246,0.3)]",
+                  "dark:shadow-[inset_0_-4px_0_rgba(59,130,246,0.2)]",
+                  "hover:translate-y-[2px]",
+                  "hover:bg-blue-100/80 dark:hover:bg-blue-900/30",
+                  "hover:shadow-[inset_0_-2px_0_rgba(59,130,246,0.3)]",
+                  "dark:hover:shadow-[inset_0_-2px_0_rgba(59,130,246,0.2)]",
+                  "active:translate-y-[4px] active:shadow-none",
+                ]
+                : [
+                  "border-amber-400/50 dark:border-amber-300/30",
+                  "bg-amber-50/80 dark:bg-amber-900/20",
+                  "text-amber-700 dark:text-amber-300",
+                  "shadow-[inset_0_-4px_0_rgba(251,191,36,0.3)]",
+                  "dark:shadow-[inset_0_-4px_0_rgba(251,191,36,0.2)]",
+                  "hover:translate-y-[2px]",
+                  "hover:bg-amber-100/80 dark:hover:bg-amber-900/30",
+                  "hover:shadow-[inset_0_-2px_0_rgba(251,191,36,0.3)]",
+                  "dark:hover:shadow-[inset_0_-2px_0_rgba(251,191,36,0.2)]",
+                  "active:translate-y-[4px] active:shadow-none",
+                ]
+              )}
+              aria-label={isPaused ? "Resume test" : "Pause test"}
+            >
+              {isPaused ? <Play className="h-5 w-5" /> : <Pause className="h-5 w-5" />}
+            </Button>
+          )}
 
           {isRunning && onReset && (
             <Button

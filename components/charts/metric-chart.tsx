@@ -33,24 +33,34 @@ type LatencyConfig = {
   
   type ChartConfig = LatencyConfig | QualityConfig;
 
-interface MetricChartProps {
-  type: ChartType
-  metrics: NetworkMetrics[]
-  isRunning: boolean
-  onToggle?: () => void
-}
-
-export function MetricChart({ type, metrics, isRunning, onToggle }: MetricChartProps) {
-  if (metrics.length === 0 || (!isRunning && metrics.length > 0)) {
-    return (
-      <div className="h-full w-full flex items-center cursor-pointer" onClick={onToggle}>
-        <EmptyState metrics={metrics} isRunning={isRunning} />
-      </div>
-    )
+  interface MetricChartProps {
+    type: ChartType
+    metrics: NetworkMetrics[]
+    isRunning: boolean
+    isResetting?: boolean
+    onToggle?: () => void
   }
+  
+  export function MetricChart({ 
+    type, 
+    metrics, 
+    isRunning, 
+    isResetting = false,
+    onToggle 
+  }: MetricChartProps) {
+    // if (metrics.length === 0 || isResetting) {
+    //   return (
+    //     <div className="h-full w-full flex items-center justify-center">
+    //       <p className="text-muted-foreground">
+    //         {isResetting ? "Resetting chart data..." : "No data available"}
+    //       </p>
+    //     </div>
+    //   )
+    // }
 
   const latestMetrics = metrics[metrics.length - 1]
-  const displayMetrics = [...metrics.slice(-15)].reverse()
+  // const displayMetrics = [...metrics.slice(-15)].reverse()
+  const displayMetrics = [...metrics].reverse()
 
   const getChartConfig = (): ChartConfig => {
     if (type === "latency") {
@@ -92,21 +102,30 @@ export function MetricChart({ type, metrics, isRunning, onToggle }: MetricChartP
 
       return (
         <div key={`${metric.timestamp}-${index}`}
-          className={`flex-1 min-w-[24px] max-w-[40px] flex justify-center gap-2 transition-transform ${animationClass}`}
-          style={{ height: "100%", alignItems: "flex-end" }}>
+        className={cn(
+          "flex-1 flex justify-center gap-2 transition-transform",
+          animationClass
+        )}
+        style={{
+          minWidth: "clamp(12px, 4vw, 24px)",
+          maxWidth: "clamp(24px, 6vw, 40px)",
+          height: "100%",
+          alignItems: "flex-end"
+        }}>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className={cn(
+              <div className={cn(
                   "w-[45%] rounded-t-sm transition-all duration-300 relative",
-                  "bg-background/80",
+                  "dark:bg-background/80",
                   metric.ping >= 1000 && "animate-pulse-glow"
                 )} 
                 style={{ 
                   height: pingHeight,
                   borderWidth: '1px',
                   borderStyle: 'solid',
-                  borderColor: pingBorderColor
+                  borderColor: pingBorderColor,
+                  backgroundColor: `${pingBorderColor}30` // Añadimos el color de fondo con 30% de opacidad
                 }} />
               </TooltipTrigger>
               <TooltipContent>
@@ -119,16 +138,17 @@ export function MetricChart({ type, metrics, isRunning, onToggle }: MetricChartP
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className={cn(
+              <div className={cn(
                   "w-[45%] rounded-t-sm transition-all duration-300 relative",
-                  "bg-background/80",
+                  "dark:bg-background/80",
                   metric.jitter >= 800 && "animate-pulse-glow"
                 )} 
                 style={{ 
                   height: jitterHeight,
                   borderWidth: '1px',
                   borderStyle: 'solid',
-                  borderColor: jitterBorderColor
+                  borderColor: `${jitterBorderColor}20`,
+                  backgroundColor: `${jitterBorderColor}20` // Añadimos el color de fondo con 30% de opacidad
                 }} />
               </TooltipTrigger>
               <TooltipContent>
@@ -142,17 +162,12 @@ export function MetricChart({ type, metrics, isRunning, onToggle }: MetricChartP
     }
 }
 
-  return (
-    <div className="flex flex-col h-full w-full p-4 space-y-6">
-      {latestMetrics && (
-        <ChartStatusIndicators 
-          statuses={config.statuses}
-          metrics={latestMetrics}
-        />
-      )}
-    <div className="h-full w-full relative rounded-lg  backdrop-blur-sm font-mono">
+return (
+  <div className="flex flex-col h-full w-full p-4 space-y-6 rounded-lg font-mono 
+  aspect-[4/3] sm:aspect-[3/2] md:aspect-[2/1] lg:aspect-[5/2] xl:aspect-[3/1] relative  pt-20 ">
+    <div className="h-full w-full relative rounded-lg backdrop-blur-sm font-mono">
       {/* Y-axis labels */}
-      <div className="absolute left-0 top-0 bottom-0 w-12 flex flex-col justify-between text-xs text-foreground/70">
+      <div className="absolute left-0 top-0 bottom-0 w-12 flex flex-col justify-between text-xs text-foreground/70 z-20">
         <span className="bg-background/80 px-2 py-1 rounded-sm border border-primary/20">
           {Object.values(config.maxValues)[0].toFixed(type === "quality" ? 1 : 0)}{config.yAxisLabel}
         </span>
@@ -162,19 +177,17 @@ export function MetricChart({ type, metrics, isRunning, onToggle }: MetricChartP
       </div>
 
       {/* Chart area */}
-      <div className="absolute left-14 right-0 top-0 bottom-0 border-l-2 border-b-2 border-primary/30">
+      <div className="absolute left-14 right-0 top-0 bottom-0 border-l-2 border-b-2 border-primary/30 z-10">
         {/* Grid lines */}
         <div className="absolute left-0 right-0 top-1/4 border-t border-primary/20 border-dashed"></div>
         <div className="absolute left-0 right-0 top-1/2 border-t border-primary/20 border-dashed"></div>
         <div className="absolute left-0 right-0 top-3/4 border-t border-primary/20 border-dashed"></div>
 
         {/* Data points */}
-        <div className="absolute inset-2 flex items-start justify-end gap-[2px]">
+        <div className="absolute inset-2 flex flex-wrap items-end justify-end gap-[2px] z-20">
           {displayMetrics.map((metric, index) => renderBars(metric, index))}
         </div>
       </div>
-
-
     </div>
           {/* Legend */}
           <div className="flex justify-center gap-4 text-xs ">

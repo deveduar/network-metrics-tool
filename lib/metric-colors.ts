@@ -29,7 +29,7 @@ export const getMetricStatus = {
     if (value >= 500) return 'High'
     if (value >= 150) return 'Warning'
     if (value >= 50) return 'Fair'
-    return '✨ Optimal'
+    return 'Optimal'
   },
   jitter: (value: number) => {
     if (value >= 1600) return 'Critical'
@@ -37,14 +37,14 @@ export const getMetricStatus = {
     if (value >= 400) return 'High'
     if (value >= 100) return 'Warning'
     if (value >= 30) return 'Fair'
-    return '✨ Optimal'
+    return 'Optimal'
   },
   packetLoss: (value: number) => {
     if (value >= 100) return 'Critical'
     if (value >= 50) return 'Very High'
     if (value >= 25) return 'High'
     if (value >= 1) return 'Warning'
-    return '✨ Optimal'
+    return 'Optimal'
   }
 }
 

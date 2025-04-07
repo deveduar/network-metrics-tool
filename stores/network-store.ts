@@ -13,7 +13,10 @@ interface NetworkState {
   updateMetrics: (metric: NetworkMetrics) => void
   addAlert: (alert: NetworkAlert) => void
   clearAlerts: () => void
+  clearMetrics: () => void  // Add this new function type
 }
+
+
 
 export const useNetworkStore = create<NetworkState>((set) => ({
   metrics: [],
@@ -30,15 +33,19 @@ export const useNetworkStore = create<NetworkState>((set) => ({
 
   stopMeasurement: () => set({ isRunning: false }),
 
+  // updateMetrics: (metric) =>
+  //   set((state) => {
+  //     const newMetrics = [...state.metrics, metric]
+  //     if (newMetrics.length > 30) {
+  //       return { metrics: newMetrics.slice(-30) }
+  //     }
+  //     return { metrics: newMetrics }
+  //   }),
+  
   updateMetrics: (metric) =>
-    set((state) => {
-      // Keep only the last 30 data points for performance
-      const newMetrics = [...state.metrics, metric]
-      if (newMetrics.length > 30) {
-        return { metrics: newMetrics.slice(-30) }
-      }
-      return { metrics: newMetrics }
-    }),
+    set((state) => ({
+      metrics: [...state.metrics, metric],
+    })),
 
   addAlert: (alert) =>
     set((state) => {
@@ -68,10 +75,13 @@ export const useNetworkStore = create<NetworkState>((set) => ({
       }
     }),
 
-  clearAlerts: () =>
-    set({
-      alerts: [],
-      alertTypes: new Set<string>(),
-    }),
-}))
+    clearAlerts: () =>
+      set({
+        alerts: [],
+        alertTypes: new Set<string>(),
+      }),
+      
+    // Add the clearMetrics function
+    clearMetrics: () => set({ metrics: [] }),
+  }))
 

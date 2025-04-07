@@ -14,9 +14,16 @@ import { UnstableCartoon } from "@/components/icons/unstable"
 interface EmptyStateProps {
   isRunning: boolean
   metrics: NetworkMetrics[]
+  isPaused?: boolean
+  isResetting?: boolean
 }
 
-export function EmptyState({ isRunning, metrics }: EmptyStateProps) {
+export function EmptyState({ 
+  isRunning, 
+  metrics, 
+  isPaused = false, 
+  isResetting = false 
+}: EmptyStateProps) {
 
   const getStatusCartoon = (status: string) => {
     switch (status) {
@@ -36,17 +43,50 @@ export function EmptyState({ isRunning, metrics }: EmptyStateProps) {
         return null
     }
   }
-  if (isRunning) {
-    return (
-      <div className="w-full text-muted-foreground text-center">
-        <p>No data available.</p>
-        <p className="text-sm">
-          <span className="animate-pulse">Collecting metrics...</span>
-        </p>
-      </div>
-    )
-  }
+  // if (isRunning) {
+  //   return (
+  //     <div className="w-full text-muted-foreground text-center">
+  //       <p>No data available.</p>
+  //       <p className="text-sm">
+  //         <span className="animate-pulse">Collecting metrics...</span>
+  //       </p>
+  //     </div>
+  //   )
+  // }
   
+
+// Handle resetting state
+if (isResetting) {
+  return (
+    <div className="rounded-lg font-mono transition-colors duration-300 w-full bg-inherit h-full">
+      <div className="mb-4 p-4 flex flex-col justify-center items-center h-full">
+        <div className="text-xl font-mono text-blue-500 dark:text-blue-400">
+          <p>Resetting measurement...</p>
+          <p className="text-sm mt-2">
+            <RetroBlinkText text="INITIALIZING NEW TEST SESSION" />
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Handle running state with no data - but don't show this immediately after reset
+if (isRunning && metrics.length === 0) {
+  return (
+    <div className="rounded-lg font-mono transition-colors duration-300 w-full bg-inherit h-full">
+      <div className="mb-4 p-4 flex flex-col justify-center items-center h-full">
+        <div className="text-xl font-mono text-primary/70">
+          <p>Initializing test...</p>
+          <p className="text-sm mt-2">
+            <RetroBlinkText text="COLLECTING METRICS..." />
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
     const summary = getSessionSummary(metrics)
 
     return (

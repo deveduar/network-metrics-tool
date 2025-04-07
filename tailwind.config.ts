@@ -113,8 +113,16 @@ const config = {
         "slide-left": "slide-left 0.3s ease-out forwards",
         "slide-right": "slide-right 0.3s ease-out forwards",
           "pulse-glow": "pulse-glow 2s ease-in-out infinite",
-          "metric-alert": "metric-alert 0.5s ease-in-out infinite"
+          "metric-alert": "metric-alert 0.5s ease-in-out infinite",
+          "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
+        
+      // backgroundImage: {
+      //   'grid-pattern': 'linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px)',
+      // },
+      // backgroundSize: {
+      //   'grid-pattern': '8px 8px',
+      // },
     },
   },
   plugins: [require("tailwindcss-animate")],

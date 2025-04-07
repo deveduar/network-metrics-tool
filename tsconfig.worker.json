@@ -1,0 +1,12 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+      "outDir": "./public/workers",
+      "module": "ES6",
+      "noEmit": false,
+      "lib": ["dom", "dom.iterable", "esnext", "webworker"]
+    },
+    "include": [
+      "lib/network.worker.ts"
+    ]
+  }
