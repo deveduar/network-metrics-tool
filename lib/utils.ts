@@ -67,3 +67,22 @@ export const getSessionSummary = (metrics: NetworkMetrics[]) => {
     quality
   }
 }
+
+export const getOverallNetworkQuality = (pingStatus: string, jitterStatus: string, lossStatus: string) => {
+  if (pingStatus === 'Critical' || jitterStatus === 'Critical' || lossStatus === 'Critical') {
+    return { status: 'CRITICAL', color: '#ff1744' };
+  }
+  if (pingStatus === 'Very High' || jitterStatus === 'Very High' || lossStatus === 'Very High') {
+    return { status: 'POOR', color: '#ff4081' };
+  }
+  if (pingStatus === 'High' || jitterStatus === 'High' || lossStatus === 'High') {
+    return { status: 'UNSTABLE', color: '#ff9100' };
+  }
+  if (pingStatus === 'Warning' || jitterStatus === 'Warning' || lossStatus === 'Warning') {
+    return { status: 'FAIR', color: '#ffea00' };
+  }
+  if (pingStatus === 'Fair' || jitterStatus === 'Fair') {
+    return { status: 'GOOD', color: '#00e676' };
+  }
+  return { status: 'OPTIMAL', color: '#00fff5' };
+};

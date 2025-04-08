@@ -2,9 +2,22 @@
 
 import { useState, useEffect } from "react"
 
+// Define NetworkInformation interface
+interface NetworkInformation extends EventTarget {
+  effectiveType: string;
+  addEventListener: (type: string, listener: EventListener) => void;
+  removeEventListener: (type: string, listener: EventListener) => void;
+}
+
+interface NavigatorWithConnection extends Navigator {
+  connection?: NetworkInformation;
+  mozConnection?: NetworkInformation;
+  webkitConnection?: NetworkInformation;
+}
+
 interface NetworkInfo {
-  isOnline: boolean
-  connectionType: string | null
+  isOnline: boolean;
+  connectionType: string | null;
 }
 
 export function useNetworkInfo(): NetworkInfo {
@@ -15,7 +28,8 @@ export function useNetworkInfo(): NetworkInfo {
 
   useEffect(() => {
     const updateNetworkInfo = () => {
-      const connection = navigator.connection || (navigator as any).mozConnection || (navigator as any).webkitConnection
+      const nav = navigator as NavigatorWithConnection
+      const connection = nav.connection || nav.mozConnection || nav.webkitConnection
 
       setNetworkInfo({
         isOnline: navigator.onLine,
@@ -30,7 +44,8 @@ export function useNetworkInfo(): NetworkInfo {
     window.addEventListener("online", updateNetworkInfo)
     window.addEventListener("offline", updateNetworkInfo)
 
-    const connection = navigator.connection || (navigator as any).mozConnection || (navigator as any).webkitConnection
+    const nav = navigator as NavigatorWithConnection
+    const connection = nav.connection || nav.mozConnection || nav.webkitConnection
 
     if (connection) {
       connection.addEventListener("change", updateNetworkInfo)
@@ -48,4 +63,3 @@ export function useNetworkInfo(): NetworkInfo {
 
   return networkInfo
 }
-

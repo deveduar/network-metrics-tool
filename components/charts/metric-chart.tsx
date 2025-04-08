@@ -1,10 +1,11 @@
 import { cn } from "@/lib/utils"
 import type { NetworkMetrics } from "@/types/network"
-import { getMetricColor, getMetricStatus, getMetricBorderColor } from "@/lib/metric-colors"
+import { getMetricStatus, getMetricBorderColor } from "@/lib/metric-colors"
 import { formatTime } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { EmptyState } from "@/components/charts/empty-state"
 import { ChartStatusIndicators } from "@/components/charts/chart-status-indicators"
+import { BarsChart } from "@/components/charts/bars-chart"
 
 type ChartType = "latency" | "quality"
 
@@ -89,82 +90,10 @@ type LatencyConfig = {
 
   const config = getChartConfig()
 
-  const renderBars = (metric: NetworkMetrics, index: number) => {
-    if (type === "latency") {
-      const config = getChartConfig() as LatencyConfig
-      const pingHeight = `${(metric.ping / config.maxValues.ping) * 100}%`
-      const jitterHeight = `${(metric.jitter / config.maxValues.jitter) * 100}%`
-      const isNewBar = index === 0
-      const animationClass = isNewBar && isRunning ? "animate-slide-right" : ""
-
-      const pingBorderColor = getMetricBorderColor.ping(metric.ping)
-      const jitterBorderColor = getMetricBorderColor.jitter(metric.jitter)
-
-      return (
-        <div key={`${metric.timestamp}-${index}`}
-        className={cn(
-          "flex-1 flex justify-center gap-2 transition-transform",
-          animationClass
-        )}
-        style={{
-          minWidth: "clamp(12px, 4vw, 24px)",
-          maxWidth: "clamp(24px, 6vw, 40px)",
-          height: "100%",
-          alignItems: "flex-end"
-        }}>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-              <div className={cn(
-                  "w-[45%] rounded-t-sm transition-all duration-300 relative",
-                  "dark:bg-background/80",
-                  metric.ping >= 1000 && "animate-pulse-glow"
-                )} 
-                style={{ 
-                  height: pingHeight,
-                  borderWidth: '1px',
-                  borderStyle: 'solid',
-                  borderColor: pingBorderColor,
-                  backgroundColor: `${pingBorderColor}30` // Añadimos el color de fondo con 30% de opacidad
-                }} />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Ping: {metric.ping.toFixed(1)}ms</p>
-                <p className="text-xs text-muted-foreground">{formatTime(metric.timestamp)}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-              <div className={cn(
-                  "w-[45%] rounded-t-sm transition-all duration-300 relative",
-                  "dark:bg-background/80",
-                  metric.jitter >= 800 && "animate-pulse-glow"
-                )} 
-                style={{ 
-                  height: jitterHeight,
-                  borderWidth: '1px',
-                  borderStyle: 'solid',
-                  borderColor: `${jitterBorderColor}20`,
-                  backgroundColor: `${jitterBorderColor}20` // Añadimos el color de fondo con 30% de opacidad
-                }} />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Jitter: {metric.jitter.toFixed(1)}ms</p>
-                <p className="text-xs text-muted-foreground">{formatTime(metric.timestamp)}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-      )
-    }
-}
 
 return (
   <div className="flex flex-col h-full w-full p-4 space-y-6 rounded-lg font-mono 
-  aspect-[4/3] sm:aspect-[3/2] md:aspect-[2/1] lg:aspect-[5/2] xl:aspect-[3/1] relative  pt-20 ">
+  aspect-[4/3] sm:aspect-[3/2] md:aspect-[2/1] lg:aspect-[5/2] xl:aspect-[3/1] relative   ">
     <div className="h-full w-full relative rounded-lg backdrop-blur-sm font-mono">
       {/* Y-axis labels */}
       <div className="absolute left-0 top-0 bottom-0 w-12 flex flex-col justify-between text-xs text-foreground/70 z-20">
@@ -185,7 +114,16 @@ return (
 
         {/* Data points */}
         <div className="absolute inset-2 flex flex-wrap items-end justify-end gap-[2px] z-20">
-          {displayMetrics.map((metric, index) => renderBars(metric, index))}
+          {displayMetrics.map((metric, index) => (
+            <BarsChart
+              key={`${metric.timestamp}-${index}`}
+              type={type}
+              metric={metric}
+              index={index}
+              isRunning={isRunning}
+              config={config}
+            />
+          ))}
         </div>
       </div>
     </div>

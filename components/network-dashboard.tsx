@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react"
 import { useNetworkStore } from "@/stores/network-store"
 import { NetworkChart } from "@/components/charts/network-chart"
-import { ControlPanel } from "@/components/panels/control-panel"
-import { MetricsPanel } from "@/components/panels/metrics-panel"
 import { AlertToast } from "@/components/alert-toast"
 import { Card, CardContent } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"

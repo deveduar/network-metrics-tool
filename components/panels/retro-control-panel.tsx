@@ -79,7 +79,7 @@ export function RetroControlPanel({
             <Button
               onClick={onPause}
               className={cn(
-                "h-12 px-4 font-bold tracking-wider uppercase",
+                "flex-1 h-12 text-lg font-bold tracking-wider uppercase",
                 "rounded-md relative group transition-all duration-300",
                 "border-2",
                 isPaused
@@ -96,21 +96,31 @@ export function RetroControlPanel({
                   "active:translate-y-[4px] active:shadow-none",
                 ]
                 : [
-                  "border-amber-400/50 dark:border-amber-300/30",
-                  "bg-amber-50/80 dark:bg-amber-900/20",
-                  "text-amber-700 dark:text-amber-300",
-                  "shadow-[inset_0_-4px_0_rgba(251,191,36,0.3)]",
-                  "dark:shadow-[inset_0_-4px_0_rgba(251,191,36,0.2)]",
+                  "border-blue-400/50 dark:border-blue-300/30",
+                  "bg-blue-50/80 dark:bg-blue-900/20",
+                  "text-blue-700 dark:text-blue-300",
+                  "shadow-[inset_0_-4px_0_rgba(59,130,246,0.3)]",
+                  "dark:shadow-[inset_0_-4px_0_rgba(59,130,246,0.2)]",
                   "hover:translate-y-[2px]",
-                  "hover:bg-amber-100/80 dark:hover:bg-amber-900/30",
-                  "hover:shadow-[inset_0_-2px_0_rgba(251,191,36,0.3)]",
-                  "dark:hover:shadow-[inset_0_-2px_0_rgba(251,191,36,0.2)]",
+                  "hover:bg-blue-100/80 dark:hover:bg-blue-900/30",
+                  "hover:shadow-[inset_0_-2px_0_rgba(59,130,246,0.3)]",
+                  "dark:hover:shadow-[inset_0_-2px_0_rgba(59,130,246,0.2)]",
                   "active:translate-y-[4px] active:shadow-none",
                 ]
               )}
               aria-label={isPaused ? "Resume test" : "Pause test"}
             >
-              {isPaused ? <Play className="h-5 w-5" /> : <Pause className="h-5 w-5" />}
+              {isPaused ? (
+                <>
+                  <Play className="mr-2 h-5 w-5" />
+                  Resume Test
+                </>
+              ) : (
+                <>
+                  <Pause className="mr-2 h-5 w-5" />
+                  Pause Test
+                </>
+              )}
             </Button>
           )}
 

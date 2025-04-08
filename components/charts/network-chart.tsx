@@ -7,6 +7,7 @@ import { ChartStatusIndicators } from "@/components/charts/chart-status-indicato
 import { getMetricStatus } from "@/lib/metric-colors"
 import { EmptyState } from "@/components/charts/empty-state"
 import { RetroBlinkText } from "@/components/retro-blink-text"
+import { MetricsIndicators } from "@/components/metrics-indicators"
 
 interface NetworkChartProps {
   metrics: NetworkMetrics[]
@@ -27,6 +28,8 @@ export function NetworkChart({
 }: NetworkChartProps) {
   const [activeTab, setActiveTab] = useState("latency")
   const [visibleCount, setVisibleCount] = useState(15)
+  const latestMetrics = metrics.length > 0 ? metrics[metrics.length - 1] : null
+
 
   const getVisibleMetricsCount = () => {
     const width = window.innerWidth
@@ -117,69 +120,80 @@ export function NetworkChart({
             </div>
           </div>
         )}
-      <div className="absolute top-4 rigth-0 right-0 flex px-4 z-10">
+      <div className="flex flex-col sm:flex-row p-4 gap-4 items-center">
         {isRunning && (
-          <div className="flex flex-end justify-end gap-2">
-            <button
-              onClick={() => setActiveTab("latency")}
-              className={cn(
-                "px-3 py-1 text-xs font-bold tracking-wider uppercase transition-all duration-300",
-                "rounded-md border-2",
-                "flex items-center gap-1",
-                activeTab === "latency" 
-                  ? [
-                      "border-blue-400/50 dark:border-blue-300/30",
-                      "bg-blue-50/80 dark:bg-blue-900/20",
-                      "translate-y-[2px]",
-                      "shadow-none",
-                      "text-blue-700 dark:text-blue-300",
-                    ]
-                  : [
-                      "border-zinc-400/30 dark:border-zinc-300/20",
-                      "bg-zinc-50/50 dark:bg-zinc-900/10",
-                      "shadow-[inset_0_-2px_0_rgba(161,161,170,0.3),0_2px_0_rgba(161,161,170,0.3)]",
-                      "dark:shadow-[inset_0_-2px_0_rgba(161,161,170,0.2),0_2px_0_rgba(161,161,170,0.2)]",
-                      "hover:translate-y-[1px]",
-                      "hover:shadow-[inset_0_-1px_0_rgba(161,161,170,0.3),0_1px_0_rgba(161,161,170,0.3)]",
-                      "dark:hover:shadow-[inset_0_-1px_0_rgba(161,161,170,0.2),0_1px_0_rgba(161,161,170,0.2)]",
-                      "active:translate-y-[2px] active:shadow-none",
-                      "text-zinc-600 dark:text-zinc-400",
-                    ]
-              )}
-            >
-              LATENCY
-            </button>
-            <button
-              onClick={() => setActiveTab("quality")}
-              className={cn(
-                "px-3 py-1 text-xs font-bold tracking-wider uppercase transition-all duration-300",
-                "rounded-md border-2",
-                "flex items-center gap-1",
-                activeTab === "quality" 
-                  ? [
-                      "border-blue-400/50 dark:border-blue-300/30",
-                      "bg-blue-50/80 dark:bg-blue-900/20",
-                      "translate-y-[2px]",
-                      "shadow-none",
-                      "text-blue-700 dark:text-blue-300",
-                    ]
-                  : [
-                      "border-zinc-400/30 dark:border-zinc-300/20",
-                      "bg-zinc-50/50 dark:bg-zinc-900/10",
-                      "shadow-[inset_0_-2px_0_rgba(161,161,170,0.3),0_2px_0_rgba(161,161,170,0.3)]",
-                      "dark:shadow-[inset_0_-2px_0_rgba(161,161,170,0.2),0_2px_0_rgba(161,161,170,0.2)]",
-                      "hover:translate-y-[1px]",
-                      "hover:shadow-[inset_0_-1px_0_rgba(161,161,170,0.3),0_1px_0_rgba(161,161,170,0.3)]",
-                      "dark:hover:shadow-[inset_0_-1px_0_rgba(161,161,170,0.2),0_1px_0_rgba(161,161,170,0.2)]",
-                      "active:translate-y-[2px] active:shadow-none",
-                      "text-zinc-600 dark:text-zinc-400",
-                    ]
-              )}
-            >
-              QUALITY
-            </button>
-          </div>
+          <>
+            {latestMetrics && 
+              <div className="flex-1 flex gap-2  flex-wrap justify-start ">
+                <MetricsIndicators metrics={latestMetrics} />
+              </div>
+            }
+                    
+            <div className="flex gap-2 shrink-0 self-start">
+              <button
+                onClick={() => setActiveTab("latency")}
+                className={cn(
+                  " px-3 py-1 text-xs font-bold tracking-wider uppercase transition-all duration-300",
+                  "rounded-md border-2",
+                  "flex items-center gap-1",
+                  activeTab === "latency" 
+                    ? [
+                        "border-blue-400/50 dark:border-blue-300/30",
+                        "bg-blue-50/80 dark:bg-blue-900/20",
+                        "translate-y-[2px]",
+                        "shadow-none",
+                        "text-blue-700 dark:text-blue-300",
+                      ]
+                    : [
+                        "border-zinc-400/30 dark:border-zinc-300/20",
+                        "bg-zinc-50/50 dark:bg-zinc-900/10",
+                        "shadow-[inset_0_-2px_0_rgba(161,161,170,0.3),0_2px_0_rgba(161,161,170,0.3)]",
+                        "dark:shadow-[inset_0_-2px_0_rgba(161,161,170,0.2),0_2px_0_rgba(161,161,170,0.2)]",
+                        "hover:translate-y-[1px]",
+                        "hover:shadow-[inset_0_-1px_0_rgba(161,161,170,0.3),0_1px_0_rgba(161,161,170,0.3)]",
+                        "dark:hover:shadow-[inset_0_-1px_0_rgba(161,161,170,0.2),0_1px_0_rgba(161,161,170,0.2)]",
+                        "active:translate-y-[2px] active:shadow-none",
+                        "text-zinc-600 dark:text-zinc-400",
+                      ]
+                )}
+              >
+                LATENCY
+              </button>
+              <button
+                onClick={() => setActiveTab("quality")}
+                className={cn(
+                  "px-3 py-1 text-xs font-bold tracking-wider uppercase transition-all duration-300",
+                  "rounded-md border-2",
+                  "flex items-center gap-1",
+                  activeTab === "quality" 
+                    ? [
+                        "border-blue-400/50 dark:border-blue-300/30",
+                        "bg-blue-50/80 dark:bg-blue-900/20",
+                        "translate-y-[2px]",
+                        "shadow-none",
+                        "text-blue-700 dark:text-blue-300",
+                      ]
+                    : [
+                        "border-zinc-400/30 dark:border-zinc-300/20",
+                        "bg-zinc-50/50 dark:bg-zinc-900/10",
+                        "shadow-[inset_0_-2px_0_rgba(161,161,170,0.3),0_2px_0_rgba(161,161,170,0.3)]",
+                        "dark:shadow-[inset_0_-2px_0_rgba(161,161,170,0.2),0_2px_0_rgba(161,161,170,0.2)]",
+                        "hover:translate-y-[1px]",
+                        "hover:shadow-[inset_0_-1px_0_rgba(161,161,170,0.3),0_1px_0_rgba(161,161,170,0.3)]",
+                        "dark:hover:shadow-[inset_0_-1px_0_rgba(161,161,170,0.2),0_1px_0_rgba(161,161,170,0.2)]",
+                        "active:translate-y-[2px] active:shadow-none",
+                        "text-zinc-600 dark:text-zinc-400",
+                      ]
+                )}
+              >
+                QUALITY
+              </button>
+              </div>
+          </>
+
+          
         )}
+
       </div>
       
       <div className="flex-1 flex">

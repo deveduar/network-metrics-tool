@@ -98,22 +98,28 @@ const config = {
           "0%": { transform: "translateX(-100%)", opacity: "0" },
           "100%": { transform: "translateX(0)", opacity: "1" }
         },
-        "pulse-glow": {
-          "0%, 100%": { opacity: "0.8" },
-          "50%": { opacity: "1", filter: "brightness(1.2)" }
+        'metric-alert': {
+          '0%, 100%': { opacity: "1" },
+          '50%': { opacity: "0.5" },
         },
-        "metric-alert": {
-          "0%, 100%": { transform: "scale(1)" },
-          "50%": { transform: "scale(1.05)" }
-        }
+        'pulse-glow': {
+          '0%, 100%': {
+            opacity: "1",
+            filter: 'brightness(100%)',
+          },
+          '50%': {
+            opacity: ".9",
+            filter: 'brightness(150%)',
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "slide-left": "slide-left 0.3s ease-out forwards",
         "slide-right": "slide-right 0.3s ease-out forwards",
-          "pulse-glow": "pulse-glow 2s ease-in-out infinite",
-          "metric-alert": "metric-alert 0.5s ease-in-out infinite",
+        'metric-alert': 'metric-alert 1s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
           "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
         
