@@ -1,16 +1,16 @@
 "use client"
 
 import { NetworkDashboard } from "@/components/network-dashboard"
+import { AboutSection } from "@/components/about-section"
 
 export default function Home() {
   return (
-// mx-auto px-4 max-w-5xl
-      <main className="container ">
-        <div className="">
-          {/* <h1 className="text-3xl font-bold mb-6 text-primary">Network Metrics Dashboard</h1> */}
-          <NetworkDashboard />
-        </div>
-      </main>
+    <main className="  ">
+      <NetworkDashboard />
+      
+      <div className="my-12">
+        <AboutSection />
+      </div>
+    </main>
   )
 }
-

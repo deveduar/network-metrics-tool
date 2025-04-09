@@ -1,5 +1,6 @@
 import { ThemeProvider } from "@/components/theme-provider"
 import { RetroNavBar } from "@/components/retro-nav-bar"
+import { RetroFooter } from "@/components/retro-footer"
 import "./globals.css";
 
 export default function RootLayout({
@@ -10,7 +11,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body className="min-h-screen bg-background antialiased" suppressHydrationWarning>
+      <body className="min-h-screen bg-background antialiased " suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -19,7 +20,11 @@ export default function RootLayout({
           storageKey="network-metrics-theme"
         >
           <RetroNavBar />
+          <div className="container">
           {children}
+
+          </div>
+          <RetroFooter />
         </ThemeProvider>
       </body>
     </html>

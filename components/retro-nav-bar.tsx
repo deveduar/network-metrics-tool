@@ -47,38 +47,34 @@ export function RetroNavBar() {
 
   return (
     <nav className="my-6">
-      {/* mx-auto px-4 max-w-5xl */}
-      <div className="container ">
-        <div className="bg-muted/40 dark:bg-muted/40 backdrop-blur-md rounded-lg border-2 border-primary/20 dark:border-primary/30 p-4">
+      <div className="container">
+        <div className="bg-muted/40 dark:bg-muted/40 backdrop-blur-md rounded-lg border-b-2 border-primary/10 dark:border-primary/20 p-4">
           <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
           <Link 
               href="/"
               className="font-mono text-xl font-bold tracking-wider uppercase flex items-center gap-2
                          px-4 py-1 rounded-md relative group
-                         border-2 border-[#00fff5]/30 dark:border-[#00fff5]/20
-                         bg-gradient-to-br from-[#00fff5]/5 via-[#64ffda]/5 to-[#00e676]/5
-                         dark:from-[#00fff5]/10 dark:via-[#64ffda]/10 dark:to-[#00e676]/10
-                         shadow-[inset_0_-2px_0_rgba(0,0,0,0.15),0_2px_0_rgba(255,255,255,0.1)]
-                         dark:shadow-[inset_0_-2px_0_rgba(0,0,0,0.4),0_2px_0_rgba(255,255,255,0.1)]
+                         border-2 border-primary/20 dark:border-primary/30
+                         bg-background/50 dark:bg-background/10
+                         shadow-[inset_0_-2px_0_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.3)]
+                         dark:shadow-[inset_0_-2px_0_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.1)]
                          hover:translate-y-[1px]
-                         hover:shadow-[inset_0_-1px_0_rgba(0,0,0,0.15),0_1px_0_rgba(255,255,255,0.1)]
-                         dark:hover:shadow-[inset_0_-1px_0_rgba(0,0,0,0.4),0_1px_0_rgba(255,255,255,0.1)]
-                         hover:bg-gradient-to-br hover:from-[#00fff5]/10 hover:via-[#64ffda]/10 hover:to-[#00e676]/10
-                         dark:hover:from-[#00fff5]/15 dark:hover:via-[#64ffda]/15 dark:hover:to-[#00e676]/15
+                         hover:shadow-[inset_0_-1px_0_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.3)]
+                         dark:hover:shadow-[inset_0_-1px_0_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.1)]
                          active:translate-y-[2px] active:shadow-none
                          transition-all duration-300"
-           
             >
-              <div className="flex items-center gap-1">
-                <div className="w-2 h-2 rounded-full bg-[#00fff5]/40 dark:bg-[#00fff5]/60 animate-pulse" />
-                <div className="w-2 h-2 rounded-full bg-[#64ffda]/40 dark:bg-[#64ffda]/60 animate-pulse delay-75" />
-                <div className="w-2 h-2 rounded-full bg-[#00e676]/40 dark:bg-[#00e676]/60 animate-pulse delay-150" />
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full bg-[#00fff5]/60 dark:bg-[#00fff5]/80 animate-pulse" />
+                  <div className="w-2 h-2 rounded-full bg-[#64ffda]/60 dark:bg-[#64ffda]/80 animate-pulse delay-75" />
+                  <div className="w-2 h-2 rounded-full bg-[#00e676]/60 dark:bg-[#00e676]/80 animate-pulse delay-150" />
+                </div>
+                <span>
+                  Ping Test
+                </span>
               </div>
-              <span className="text-zinc-700 dark:text-zinc-300
-                             group-hover:text-zinc-900 dark:group-hover:text-zinc-100">
-                Ping Test
-              </span>
             </Link>
               {/* Tools Dropdown */}
               <DropdownMenu>
@@ -105,7 +101,7 @@ export function RetroNavBar() {
 
             {/* About Button */}
             <Link 
-                href="/about"
+                href="#about"
                 className={cn(
                   "h-8 px-4 font-bold tracking-wider uppercase flex items-center gap-2",
                   "rounded-md relative group transition-all duration-300",
@@ -144,15 +140,15 @@ export function RetroNavBar() {
              {/* Social Links */}
              <div className="flex items-center gap-2 pl-2 border-l-2 border-primary/20">
              {socialLinks.map((link) => (
-                  <div key={link.label} className="flex flex-col items-center gap-1">
                     <SocialLink
+                      key={link.label}
                       href={link.href}
                       label={link.label}
                       icon={link.icon}
                     />
-                  </div>
+
                 ))}
-                  <div className="pl-2 border-l-2 border-primary/20 flex items-center h-8">
+                  <div className="pl-2 border-l-2 border-primary/20 flex items-center ">
                     <ModeToggle />
                   </div>
                 
@@ -203,7 +199,7 @@ export function RetroNavBar() {
                 </AccordionItem>
               </Accordion>
               <Link 
-                href="/about"
+                href="#about"
                 className="h-8 px-4 font-bold tracking-wider uppercase flex items-center gap-2
                          rounded-md relative group
                          border-2 border-blue-400/50 dark:border-blue-300/30
@@ -216,10 +212,11 @@ export function RetroNavBar() {
                          active:translate-y-[2px] active:shadow-none
                          text-blue-700 dark:text-blue-300
                          transition-all duration-300"
+                onClick={() => setIsMenuOpen(false)}
               >
                 <HelpCircle className="w-4 h-4" />
                 About
-              </Link>  
+              </Link>
               {/* Social Links Grid */}
               <div className="flex justify-end gap-2 pt-4 mt-2 border-t-2 border-primary/20">
                 {socialLinks.map((link) => (

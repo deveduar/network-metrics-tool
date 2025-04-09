@@ -21,23 +21,23 @@ export function NetworkHealthBar({ networkQuality, healthPercentage, segmentWidt
         
         <div className="flex-1 w-full">
           <div 
-            className="w-full h-6 bg-blue-50/90 dark:bg-background/50 rounded-md overflow-hidden relative shadow-inner"
             style={{
               ['--health-color' as string]: networkQuality.color,
-              border: `2px solid ${networkQuality.color}50`,
-              boxShadow: `inset 0 2px 4px ${networkQuality.color}20`
+              ['--health-color-light' as string]: `${networkQuality.color}30`,
+              ['--health-color-dark' as string]: `${networkQuality.color}50`,
             }}
+            className="w-full h-6 rounded-md overflow-hidden relative shadow-inner
+                      bg-foreground/10 dark:bg-background/50
+                      border border-foreground/70 dark:border-[var(--health-color-dark)]"
           >
             <div 
-              className="h-full transition-all duration-300"
               style={{ 
                 width: `${healthPercentage}%`,
-                background: `linear-gradient(90deg, 
-                  var(--health-color) 0%, 
-                  ${networkQuality.color}80 100%
-                )`,
-                boxShadow: `0 0 10px ${networkQuality.color}60`
               }}
+              className="h-full transition-all duration-300
+                        bg-gradient-to-r from-[var(--health-color)] to-[var(--health-color-light)]
+                        dark:bg-gradient-to-r dark:from-[var(--health-color)] dark:to-[var(--health-color-dark)]
+                        shadow-[0_0_10px_var(--health-color-light)] dark:shadow-[0_0_10px_var(--health-color-dark)]"
             >
               <div className="absolute inset-0 bg-scanline opacity-20"></div>
             </div>
@@ -46,16 +46,14 @@ export function NetworkHealthBar({ networkQuality, healthPercentage, segmentWidt
               {Object.entries(segmentWidths).map(([key, width]) => (
                 <div 
                   key={key}
-                  className="h-full border-r last:border-r-0" 
                   style={{ 
                     width,
-                    borderColor: `${networkQuality.color}40`
                   }}
+                  className="h-full border-r last:border-r-0 border-[var(--health-color-light)]/40 dark:border-[var(--health-color-dark)]/40"
                 />
               ))}
             </div>
           </div>
-
           <div className="flex  text-[8px] md:text-[10px] mt-1 text-foreground/80 dark:text-muted-foreground/70 overflow-hidden">
             {Object.entries(segmentWidths).map(([key, width]) => {
               const isActive = networkQuality.status.toLowerCase() === key.toLowerCase();

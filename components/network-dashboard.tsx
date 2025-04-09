@@ -144,17 +144,17 @@ export function NetworkDashboard() {
 
   return (
     <div className="">
-      <div className="w-full font-mono p-4 rounded-lg border-2 dark:border-primary/30 border-primary/20 [inset_0_0_8px_rgba(139,69,19,0.1)]
-      bg-muted/40 dark:bg-muted/40 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-1 space-y-6">
+      <div className="w-full font-mono p-4 rounded-lg dark:border-primary/30 border-primary/20 [inset_0_0_8px_rgba(139,69,19,0.1)]
+      bg-muted/30 dark:bg-muted/20 mb-6">
+        <section className="grid grid-cols-1 md:grid-cols-1 space-y-6">
           {/* Control Panel Section */}
-          <Card className=" border-0 bg-inherit  ">
-            <CardContent className="p-0 space-y-6 ">
-            <RetroGamePanel 
+          
+            <div className="space-y-6">
+              <RetroGamePanel 
                 metrics={metrics}
                 isRunning={isRunning}
                 isPaused={isPaused}
-                isResetting={isResetting}  // Pass isResetting prop
+                isResetting={isResetting} 
                 onToggle={handleToggleMeasurement}
                 config={{
                   asciiStyle: "rpg",
@@ -168,7 +168,7 @@ export function NetworkDashboard() {
                 isPaused={isPaused}
                 isResetting={isResetting}
                 onToggle={handleToggleMeasurement}
-                onPause={handlePauseMeasurement}  // Add this line
+                onPause={handlePauseMeasurement} 
               />
               <RetroControlPanel 
                 isRunning={isRunning}
@@ -180,9 +180,9 @@ export function NetworkDashboard() {
                   packetLoss: metrics[metrics.length - 1].packetLoss
                 } : undefined}
               />
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+         
+        </section>
       </div>
 
       {alerts.map((alert) => (

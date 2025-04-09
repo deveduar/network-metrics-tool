@@ -144,9 +144,9 @@ const segmentWidths = {
 
  return (
     <div className={cn(
-      "rounded-lg font-mono transition-colors duration-300 bg-accent dark:bg-muted/40 dark:border-primary/30 border-primary/20 [inset_0_0_8px_rgba(139,69,19,0.1)]", className)}>
+      "rounded-lg font-mono transition-colors duration-300 bg-accent dark:bg-muted/40 [inset_0_0_8px_rgba(139,69,19,0.1)]", className)}>
       <div className={cn(
-                "border-2 rounded-xl w-full p-4 border-primary/30",
+                "border rounded-xl w-full p-4 border-primary/30",
                 isResetting ? "text-blue-600 dark:text-blue-400" :
                 !isRunning ? "text-gray-600 dark:text-gray-400" :
                 isPaused 
@@ -154,20 +154,32 @@ const segmentWidths = {
                   : "text-green-600 dark:text-green-400"
               )}>
     
-          
-    <div className="flex flex-row justify-between gap-2">
-            <div className={cn(
-                "text-sm font-bold py-1 whitespace-nowrap flex gap-2",
-                "px-2 rounded-md border text-foreground/70",
+    <div className="flex flex-row justify-between items-center">
+            {isRunning && !isPaused && !isResetting && latestMetrics ? (
+              <NetworkStatusIndicator 
+                metrics={metrics}
+                latestMetrics={latestMetrics}
+                networkQuality={networkQuality}
+              />
+            ) : isRunning && !latestMetrics ? (
+              // Estado de carga cuando está ejecutándose pero aún no hay métricas
+              <div className="h-[32px] inline-flex items-center text-sm tracking-widest whitespace-nowrap px-2 py-1 rounded-md border border-blue-300/50 dark:border-blue-500/30 bg-blue-50/50 dark:bg-blue-900/10 text-blue-600/70 dark:text-blue-400/70 animate-pulse">
+                LOADING DATA...
+              </div>
+            ) : (
+              <div className={cn(
+                "h-[32px] inline-flex items-center text-sm tracking-widest whitespace-nowrap px-2 py-1 rounded-md",
+                "border text-foreground/70",
                 "bg-blue-50/90 border-blue-400/50 dark:bg-background/40 dark:border-primary/20",
                 isResetting ? "bg-blue-100 border-blue-400/50 dark:text-blue-400 dark:border-blue-300/30" :
                 !isRunning ? "bg-zinc-100 border-zinc-400/50 dark:text-gray-400 dark:border-zinc-300/20" :
                 isPaused 
                   ? "bg-yellow-100 border-yellow-400/50 dark:text-yellow-400 dark:border-yellow-300/30" 
-                  : "bg-green-200 border-green-400/50 dark:text-green-400 dark:border-green-300/30"
+                  : ""
               )}>
-              <RetroBlinkText text={isResetting ? "RESETTING TEST..." : !isRunning ? "TEST IDLE" : isPaused ? "TEST PAUSED" : "TEST ACTIVE"} />
-            </div>
+                {isResetting ? "RESETTING TEST..." : !isRunning ? "TEST IDLE" : "TEST PAUSED"}
+              </div>
+            )}
             <div className="flex justify-end text-black dark:text-white">
               <StatusIndicators 
                 metrics={latestMetrics ? { packetLoss: latestMetrics.packetLoss } : undefined}
@@ -175,6 +187,7 @@ const segmentWidths = {
               />
             </div>
           </div>
+          
 
             {/* Metrics stacked below status */}
             {/* {isRunning && latestMetrics && !isResetting && ( 

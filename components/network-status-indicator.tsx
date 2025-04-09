@@ -21,11 +21,10 @@ interface NetworkStatusIndicatorProps {
     );
   
     return (
-      <div className="w-fit text-xs font-bold uppercase tracking-wider sm:flex-1 sm:text-center">
-
+      <div className="h-[32px] flex items-center">
         {!hasSignificantChanges ? (
         <span className={cn(
-          "text-sm tracking-widest whitespace-nowrap px-2 py-1 rounded-md",
+          "h-[32px] inline-flex items-center text-sm tracking-widest whitespace-nowrap px-2 py-1 rounded-md",
           "bg-[var(--metric-bg)] dark:bg-background/40",
           "text-foreground/70 dark:text-[var(--metric-color)]",
           "border border-primary/20 dark:border-[var(--metric-border)]",
@@ -41,7 +40,7 @@ interface NetworkStatusIndicatorProps {
           NETWORK STATUS: {networkQuality.status}
         </span>
       ) : (
-        <span className="text-sm font-bold tracking-widest whitespace-nowrap px-2 py-1 rounded-md bg-red-50/80 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-500 animate-metric-alert">
+        <span className="h-[32px] inline-flex items-center text-sm font-bold tracking-widest whitespace-nowrap px-2 py-1 rounded-md bg-red-50/80 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-500 animate-metric-alert">
           ⚠ ALERT: {" "}
           {Math.abs(latestMetrics.ping - metrics[metrics.length - 2].ping) > 50 ? "PING SPIKE " : ""}
           {Math.abs(latestMetrics.jitter - metrics[metrics.length - 2].jitter) > 15 ? "JITTER CHANGE " : ""}

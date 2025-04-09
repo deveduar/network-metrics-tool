@@ -32,23 +32,22 @@ export function BarsChart({ type, metric, index, isRunning, config }: BarsChartP
           minWidth: "clamp(12px, 4vw, 24px)",
           maxWidth: "clamp(24px, 6vw, 40px)",
           height: "100%",
-          alignItems: "flex-end"
+          alignItems: "flex-end",
+          ['--ping-color' as string]: `${pingBorderColor}95`,
+          ['--ping-border' as string]: `${pingBorderColor}`,
+          ['--jitter-color' as string]: `${jitterBorderColor}40`,
+          ['--jitter-border' as string]: `${jitterBorderColor}`,
         }}>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className={cn(
+            <div className={cn(
                 "w-[45%] rounded-t-sm transition-all duration-300 relative",
-                "dark:bg-background/80",
+                "bg-[var(--ping-color)] dark:bg-[var(--ping-color)]",
+                "border border-foreground/30  dark:border-[var(--ping-border)]",
                 metric.ping >= 1000 && "animate-pulse-glow"
               )} 
-              style={{ 
-                height: pingHeight,
-                borderWidth: '1px',
-                borderStyle: 'solid',
-                borderColor: pingBorderColor,
-                backgroundColor: `${pingBorderColor}30`
-              }} />
+              style={{ height: pingHeight }} />
             </TooltipTrigger>
             <TooltipContent>
               <p>Ping: {metric.ping.toFixed(1)}ms</p>
@@ -62,16 +61,11 @@ export function BarsChart({ type, metric, index, isRunning, config }: BarsChartP
             <TooltipTrigger asChild>
               <div className={cn(
                 "w-[45%] rounded-t-sm transition-all duration-300 relative",
-                "dark:bg-background/80",
+                "bg-[var(--jitter-color)] dark:bg-[var(--jitter-color)]",
+                "border border-foreground/20 ",
                 metric.jitter >= 800 && "animate-pulse-glow"
               )} 
-              style={{ 
-                height: jitterHeight,
-                borderWidth: '1px',
-                borderStyle: 'solid',
-                borderColor: `${jitterBorderColor}20`,
-                backgroundColor: `${jitterBorderColor}20`
-              }} />
+              style={{ height: jitterHeight }} />
             </TooltipTrigger>
             <TooltipContent>
               <p>Jitter: {metric.jitter.toFixed(1)}ms</p>

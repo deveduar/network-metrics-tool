@@ -96,7 +96,7 @@ export function NetworkChart({
   
   if (shouldShowEmptyState) {
     return (
-      <div className="h-[565px] border-2 border-dashed border-primary/30 rounded-lg bg-accent dark:bg-muted/40 flex flex-col relative">
+      <div className="h-[565px] border d border-primary/30 rounded-lg bg-accent dark:bg-muted/40 flex flex-col relative">
         <div className="flex-1 flex items-center justify-center cursor-pointer" onClick={!isRunning && !isResetting ? onToggle : undefined}>
           <EmptyState 
             metrics={metrics} 
@@ -109,7 +109,7 @@ export function NetworkChart({
     )
   }
     return (
-      <div className="h-[565px] border-2 border-dashed border-primary/30 rounded-lg bg-accent dark:bg-muted/40 flex flex-col relative">
+      <div className="h-[565px] border border-primary/30 rounded-lg bg-accent dark:bg-muted/40 flex flex-col relative">
         {/* Add pause overlay */}
         {isPaused && (
           <div 
@@ -131,18 +131,14 @@ export function NetworkChart({
       <div className="flex flex-col sm:flex-row p-4 gap-4 items-center">
         {isRunning && (
           <>
-            {latestMetrics && 
-              <div className="flex-1 flex flex-col gap-2">
-                <NetworkStatusIndicator 
-                  metrics={metrics}
-                  latestMetrics={latestMetrics}
-                  networkQuality={networkQuality}
-                />
-                <div className="flex gap-2 flex-wrap justify-start">
-                  <MetricsIndicators metrics={latestMetrics} />
-                </div>
+          {latestMetrics && 
+            <div className="flex-1 flex flex-col gap-2">
+              {/* NetworkStatusIndicator se muestra ahora en RetroGamePanel */}
+              <div className="flex gap-2 flex-wrap justify-start">
+                <MetricsIndicators metrics={latestMetrics} />
               </div>
-            }
+            </div>
+          }
                     
             <div className="flex gap-2 shrink-0 self-start">
               <button
