@@ -153,40 +153,35 @@ const segmentWidths = {
                   ? "text-yellow-600 dark:text-yellow-400" 
                   : "text-green-600 dark:text-green-400"
               )}>
-      <div className="flex justify-between">
-          <div className= "text-sm font-bold w-full">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 ">
-          <div className={cn(
-                "text-sm font-bold  py-0.5  whitespace-nowrap flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full"
-               
+    
+          
+    <div className="flex flex-row justify-between gap-2">
+            <div className={cn(
+                "text-sm font-bold py-1 whitespace-nowrap flex gap-2",
+                "px-2 rounded-md border text-foreground/70",
+                "bg-blue-50/90 border-blue-400/50 dark:bg-background/40 dark:border-primary/20",
+                isResetting ? "bg-blue-100 border-blue-400/50 dark:text-blue-400 dark:border-blue-300/30" :
+                !isRunning ? "bg-zinc-100 border-zinc-400/50 dark:text-gray-400 dark:border-zinc-300/20" :
+                isPaused 
+                  ? "bg-yellow-100 border-yellow-400/50 dark:text-yellow-400 dark:border-yellow-300/30" 
+                  : "bg-green-200 border-green-400/50 dark:text-green-400 dark:border-green-300/30"
               )}>
-                <RetroBlinkText text={isResetting ? "RESETTING TEST..." : !isRunning ? "TEST IDLE" : isPaused ? "TEST PAUSED" : "TEST ACTIVE"} />
-
-                {/* Health Label */}
-                {isRunning && latestMetrics && !isResetting && (
-                  <NetworkStatusIndicator 
-                    metrics={metrics}
-                    latestMetrics={latestMetrics}
-                    networkQuality={networkQuality}
-                  />
-                )}
-
-              <div className="w-full sm:w-auto sm:ml-auto">
-                  <StatusIndicators 
-                    metrics={latestMetrics ? { packetLoss: latestMetrics.packetLoss } : undefined}
-                    retro={true}
-                  />
-                </div>
-              </div>
-              
+              <RetroBlinkText text={isResetting ? "RESETTING TEST..." : !isRunning ? "TEST IDLE" : isPaused ? "TEST PAUSED" : "TEST ACTIVE"} />
             </div>
+            <div className="flex justify-end text-black dark:text-white">
+              <StatusIndicators 
+                metrics={latestMetrics ? { packetLoss: latestMetrics.packetLoss } : undefined}
+                retro={true}
+              />
+            </div>
+          </div>
 
             {/* Metrics stacked below status */}
             {/* {isRunning && latestMetrics && !isResetting && ( 
               <MetricsIndicators metrics={latestMetrics} />
             )} */}
-          </div>
-        </div>
+       
+  
         {/* Status Bar and Alerts */}
         {isRunning && latestMetrics && !isResetting && (
           <NetworkHealthBar 

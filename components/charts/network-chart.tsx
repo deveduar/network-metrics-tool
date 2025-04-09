@@ -8,7 +8,8 @@ import { getMetricStatus } from "@/lib/metric-colors"
 import { EmptyState } from "@/components/charts/empty-state"
 import { RetroBlinkText } from "@/components/retro-blink-text"
 import { MetricsIndicators } from "@/components/metrics-indicators"
-
+import { getOverallNetworkQuality } from "@/lib/utils"
+import { NetworkStatusIndicator } from "@/components/network-status-indicator"
 interface NetworkChartProps {
   metrics: NetworkMetrics[]
   isRunning: boolean
@@ -24,12 +25,19 @@ export function NetworkChart({
   isPaused = false, 
   isResetting = false,
   onToggle,
-  onPause  // Add this line
+  onPause  
 }: NetworkChartProps) {
   const [activeTab, setActiveTab] = useState("latency")
   const [visibleCount, setVisibleCount] = useState(15)
   const latestMetrics = metrics.length > 0 ? metrics[metrics.length - 1] : null
 
+  const pingStatus = latestMetrics ? getMetricStatus.ping(latestMetrics.ping) : 'Optimal';
+  const jitterStatus = latestMetrics ? getMetricStatus.jitter(latestMetrics.jitter) : 'Optimal';
+  const lossStatus = latestMetrics ? getMetricStatus.packetLoss(latestMetrics.packetLoss) : 'Optimal';
+
+  const networkQuality = latestMetrics 
+    ? getOverallNetworkQuality(pingStatus, jitterStatus, lossStatus)
+    : { status: 'Waiting...', color: '#00e676' }
 
   const getVisibleMetricsCount = () => {
     const width = window.innerWidth
@@ -124,8 +132,15 @@ export function NetworkChart({
         {isRunning && (
           <>
             {latestMetrics && 
-              <div className="flex-1 flex gap-2  flex-wrap justify-start ">
-                <MetricsIndicators metrics={latestMetrics} />
+              <div className="flex-1 flex flex-col gap-2">
+                <NetworkStatusIndicator 
+                  metrics={metrics}
+                  latestMetrics={latestMetrics}
+                  networkQuality={networkQuality}
+                />
+                <div className="flex gap-2 flex-wrap justify-start">
+                  <MetricsIndicators metrics={latestMetrics} />
+                </div>
               </div>
             }
                     
