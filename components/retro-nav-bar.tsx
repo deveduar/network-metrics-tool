@@ -59,9 +59,6 @@ export function RetroNavBar() {
                          bg-background/50 dark:bg-background/10
                          shadow-[inset_0_-2px_0_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.3)]
                          dark:shadow-[inset_0_-2px_0_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.1)]
-                         hover:translate-y-[1px]
-                         hover:shadow-[inset_0_-1px_0_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.3)]
-                         dark:hover:shadow-[inset_0_-1px_0_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.1)]
                          active:translate-y-[2px] active:shadow-none
                          transition-all duration-300"
             >
