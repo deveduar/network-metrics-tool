@@ -147,7 +147,8 @@ const segmentWidths = {
     <div className={cn(
       "rounded-lg font-mono transition-colors duration-300 bg-accent dark:bg-muted/40 [inset_0_0_8px_rgba(139,69,19,0.1)]", className)}>
       <div className={cn(
-                "border rounded-xl w-full p-4 border-primary/30 max-h-[130px] flex flex-col justify-between",
+                "border rounded-xl w-full p-4 border-primary/30 flex flex-col justify-between",
+                (isRunning && !isPaused && !isResetting && latestMetrics) ? "max-h-[170px]" : "max-h-[130px]",
                 isResetting ? "text-blue-600 dark:text-blue-400" :
                 !isRunning ? "text-gray-600 dark:text-gray-400" :
                 isPaused 
@@ -155,36 +156,51 @@ const segmentWidths = {
                   : "text-green-600 dark:text-green-400"
               )}>
     
-          <div className="flex flex-row justify-between items-center">
-            {isRunning && !isPaused && !isResetting && latestMetrics ? (
-              <NetworkStatusIndicator 
-                metrics={metrics}
-                latestMetrics={latestMetrics}
-                networkQuality={networkQuality}
-              />
-            ) : isRunning && !latestMetrics ? (
-              <div className="h-[32px] inline-flex items-center text-sm tracking-widest whitespace-nowrap px-2 py-1 rounded-md border border-blue-300/50 dark:border-blue-500/30 bg-blue-50/50 dark:bg-blue-900/10 text-blue-600/70 dark:text-blue-400/70">
-                <RetroDotText text="LOADING DATA" />
-              </div>
-            ) : (
-              <div className={cn(
-                "h-[32px] inline-flex items-center text-sm tracking-widest whitespace-nowrap px-2 py-1 rounded-md",
-                "border text-foreground/70 min-w-[120px] justify-center",
-                "bg-blue-50/90 border-blue-400/50 dark:bg-background/40 dark:border-primary/20",
-                isResetting ? "bg-blue-100 border-blue-400/50 dark:text-blue-400 dark:border-blue-300/30" :
-                !isRunning ? "bg-zinc-100 border-zinc-400/50 dark:text-gray-400 dark:border-zinc-300/20" :
-                isPaused 
-                  ? "bg-yellow-100 border-yellow-400/50 dark:text-yellow-400 dark:border-yellow-300/30" 
-                  : ""
-              )}>
-                <div className="text-center w-full">
-                  {isResetting ? <RetroDotText text="RESETTING TEST" /> : 
-                   !isRunning ? <RetroBlinkText text="TEST IDLE" /> : 
-                   <RetroBlinkText text="TEST PAUSED" />}
+          <div className={cn(
+            "flex justify-between items-center gap-2",
+            (isRunning && !isPaused && !isResetting && latestMetrics) 
+              ? "flex-col-reverse sm:flex-row" 
+              : "flex-row"
+          )}>
+            <div className={cn(
+              "sm:w-auto",
+              (isRunning && !isPaused && !isResetting && latestMetrics) ? "w-full" : ""
+            )}>
+              {isRunning && !isPaused && !isResetting && latestMetrics ? (
+                <NetworkStatusIndicator 
+                  metrics={metrics}
+                  latestMetrics={latestMetrics}
+                  networkQuality={networkQuality}
+                />
+              ) : isRunning && !latestMetrics ? (
+                <div className="h-[32px] inline-flex items-center text-sm tracking-widest whitespace-nowrap px-2 py-1 rounded-md border border-blue-300/50 dark:border-blue-500/30 bg-blue-50/50 dark:bg-blue-900/10 text-blue-600/70 dark:text-blue-400/70">
+                  <RetroDotText text="LOADING DATA" />
                 </div>
-              </div>
-            )}
-            <div className="flex justify-end text-black dark:text-white">
+              ) : (
+                <div className={cn(
+                  "h-[32px] inline-flex items-center text-sm tracking-widest whitespace-nowrap px-2 py-1 rounded-md",
+                  "border text-foreground/70 min-w-[120px] justify-center",
+                  "bg-blue-50/90 border-blue-400/50 dark:bg-background/40 dark:border-primary/20",
+                  isResetting ? "bg-blue-100 border-blue-400/50 dark:text-blue-400 dark:border-blue-300/30" :
+                  !isRunning ? "bg-zinc-100 border-zinc-400/50 dark:text-gray-400 dark:border-zinc-300/20" :
+                  isPaused 
+                    ? "bg-yellow-100 border-yellow-400/50 dark:text-yellow-400 dark:border-yellow-300/30" 
+                    : ""
+                )}>
+                  <div className="text-center w-full">
+                    {isResetting ? <RetroDotText text="RESETTING TEST" /> : 
+                     !isRunning ? <RetroBlinkText text="TEST IDLE" /> : 
+                     <RetroBlinkText text="TEST PAUSED" />}
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className={cn(
+              "flex text-black dark:text-white",
+              (isRunning && !isPaused && !isResetting && latestMetrics) 
+                ? "justify-end w-full sm:justify-end sm:w-auto" 
+                : "justify-end"
+            )}>
               <StatusIndicators 
                 metrics={latestMetrics ? { packetLoss: latestMetrics.packetLoss } : undefined}
                 retro={true}
