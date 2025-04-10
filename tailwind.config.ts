@@ -112,6 +112,10 @@ const config = {
             filter: 'brightness(150%)',
           },
         },
+        'super-slow-pulse': {
+          '0%, 10%, 90%, 100%': { opacity: "1" },
+          '50%': { opacity: "0.85" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -120,7 +124,9 @@ const config = {
         "slide-right": "slide-right 0.3s ease-out forwards",
         'metric-alert': 'metric-alert 1s ease-in-out infinite',
         'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-          "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        'pulse-very-slow': 'pulse 40s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'super-slow-breath': 'super-slow-pulse 15s ease-in-out infinite',
       },
         
       // backgroundImage: {

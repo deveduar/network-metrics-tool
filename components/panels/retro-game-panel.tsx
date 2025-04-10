@@ -142,11 +142,11 @@ const segmentWidths = {
 
 
 
- return (
+  return (
     <div className={cn(
       "rounded-lg font-mono transition-colors duration-300 bg-accent dark:bg-muted/40 [inset_0_0_8px_rgba(139,69,19,0.1)]", className)}>
       <div className={cn(
-                "border rounded-xl w-full p-4 border-primary/30",
+                "border rounded-xl w-full p-4 border-primary/30 min-h-[135px] flex flex-col justify-between",
                 isResetting ? "text-blue-600 dark:text-blue-400" :
                 !isRunning ? "text-gray-600 dark:text-gray-400" :
                 isPaused 
@@ -154,7 +154,7 @@ const segmentWidths = {
                   : "text-green-600 dark:text-green-400"
               )}>
     
-    <div className="flex flex-row justify-between items-center">
+          <div className="flex flex-row justify-between items-center">
             {isRunning && !isPaused && !isResetting && latestMetrics ? (
               <NetworkStatusIndicator 
                 metrics={metrics}
@@ -162,7 +162,6 @@ const segmentWidths = {
                 networkQuality={networkQuality}
               />
             ) : isRunning && !latestMetrics ? (
-              // Estado de carga cuando está ejecutándose pero aún no hay métricas
               <div className="h-[32px] inline-flex items-center text-sm tracking-widest whitespace-nowrap px-2 py-1 rounded-md border border-blue-300/50 dark:border-blue-500/30 bg-blue-50/50 dark:bg-blue-900/10 text-blue-600/70 dark:text-blue-400/70 animate-pulse">
                 LOADING DATA...
               </div>
@@ -187,36 +186,40 @@ const segmentWidths = {
               />
             </div>
           </div>
-          
-
-            {/* Metrics stacked below status */}
-            {/* {isRunning && latestMetrics && !isResetting && ( 
-              <MetricsIndicators metrics={latestMetrics} />
-            )} */}
-       
-  
-        {/* Status Bar and Alerts */}
-        {isRunning && latestMetrics && !isResetting && (
-          <NetworkHealthBar 
-            networkQuality={networkQuality}
-            healthPercentage={getHealthPercentage()}
-            segmentWidths={segmentWidths}
-          />
-        )}
-        
-        {/* Show reset message when resetting */}
-        {isResetting && (
-          <div className="text-xs font-mono mt-3 text-blue-600 dark:text-blue-400">
-            <RetroBlinkText text="INITIALIZING NEW TEST SESSION..." />
-          </div>
-        )}
-        
-        {/* Show idle message when not running and not resetting */}
-        {!isRunning && !isResetting && (
-          <div className="text-xs font-mono mt-3 text-muted-foreground">
-            <RetroBlinkText text="PRESS START TEST TO BEGIN" />
-          </div>
-        )}
+         
+          <div className="mt-3 min-h-[40px]">
+          {/* Status Bar and Alerts */}
+          {isRunning && latestMetrics && !isResetting ? (
+            <NetworkHealthBar 
+              networkQuality={networkQuality}
+              healthPercentage={getHealthPercentage()}
+              segmentWidths={segmentWidths}
+            />
+          ) : isRunning && !latestMetrics && !isResetting ? (
+            <div className="h-[32px] flex items-center justify-center">
+              <div className="w-full h-4 rounded-full overflow-hidden relative ">
+                <div className="h-full  animate-pulse rounded-full"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-[10px] font-mono text-blue-600/70 dark:text-blue-400/70 tracking-widest">
+                    LOADING METRICS...
+                  </span>
+                </div>
+              </div>
+            </div>
+          ) : isResetting ? (
+            <div className="text-xs font-mono text-blue-600 dark:text-blue-400 text-center">
+              <RetroBlinkText text="INITIALIZING NEW TEST SESSION..." />
+            </div>
+          ) : !isRunning ? (
+            <div className="text-xs font-mono text-muted-foreground text-center">
+              <RetroBlinkText text="PRESS START TEST TO BEGIN" />
+            </div>
+          ) : (
+            <div className="text-xs font-mono text-yellow-600 dark:text-yellow-400 text-center">
+              <RetroBlinkText text="TEST PAUSED - PRESS RESUME TO CONTINUE" />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

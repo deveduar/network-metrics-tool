@@ -171,3 +171,36 @@
 .drop-shadow-glow {
   filter: drop-shadow(0 0 2px currentColor);
 }
+
+/* Añade esto al final del archivo */
+.resume-button-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.resume-button-glow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 300%;
+  height: 100%;
+  background: linear-gradient(
+    90deg, 
+    transparent 0%, 
+    rgba(59, 130, 246, 0.05) 25%, 
+    rgba(59, 130, 246, 0.1) 50%, 
+    rgba(59, 130, 246, 0.05) 75%, 
+    transparent 100%
+  );
+  animation: resume-glow 30s linear infinite;
+}
+
+@keyframes resume-glow {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}

@@ -144,7 +144,7 @@ export function NetworkDashboard() {
 
   return (
     <div className="">
-      <div className="w-full font-mono p-4 rounded-lg dark:border-primary/30 border-primary/20 [inset_0_0_8px_rgba(139,69,19,0.1)]
+      <div className="w-full font-mono p-4 rounded-lg dark:border-primary/30 border-primary/20 
       bg-muted/30 dark:bg-muted/20 mb-6">
         <section className="grid grid-cols-1 md:grid-cols-1 space-y-6">
           {/* Control Panel Section */}
