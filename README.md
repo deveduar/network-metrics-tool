@@ -66,7 +66,7 @@ A: Not yet, but this is a planned feature for future versions.
 - 🅾️ **TypeScript** – Type-safe development  
 - 🎨 **Tailwind CSS** – Rapid and responsive UI  
 - ⚙️ **Zustand** – Lightweight and scalable state management  
-- 🧵 **Web Workers** – Efficient background processing    
+- 💪 **Web Workers** – Efficient background processing    
 - 📈 **Custom Metrics Charts** – Visualizations with color indicators  
 
 ## 🔐 Privacy & Cookies
