@@ -28,17 +28,17 @@ export function EmptyState({
   const getStatusCartoon = (status: string) => {
     switch (status) {
       case 'Critical Connection':
-        return <CriticalCartoon className={`w-[320px] h-[280px] transition-colors duration-300 text-[#ff1744] hover:text-[#ff1744]/70`} />
+        return <CriticalCartoon className={`w-[320px] h-[240px] transition-colors duration-300 text-[#ff1744] hover:text-[#ff1744]/70`} />
       case 'Poor Connection':
-        return <PoorCartoon className={`w-[320px] h-[280px] transition-colors duration-300 text-[#ff4081] hover:text-[#ff4081]/70`} />
+        return <PoorCartoon className={`w-[320px] h-[240px] transition-colors duration-300 text-[#ff4081] hover:text-[#ff4081]/70`} />
       case 'Unstable Connection':
-        return <UnstableCartoon className={`w-[320px] h-[280px] transition-colors duration-300 text-[#ff9100] hover:text-[#ff9100]/70`} />
+        return <UnstableCartoon className={`w-[320px] h-[240px] transition-colors duration-300 text-[#ff9100] hover:text-[#ff9100]/70`} />
       case 'Fair Connection':
-        return <FairCartoon className={`w-[320px] h-[280px] transition-colors duration-300 text-[#ffea00] hover:text-[#ffea00]/70`} />
+        return <FairCartoon className={`w-[320px] h-[240px] transition-colors duration-300 text-[#ffea00] hover:text-[#ffea00]/70`} />
       case 'Good Connection':
-        return <GoodCartoon className={`w-[320px] h-[280px] transition-colors duration-300 text-[#00e676] hover:text-[#00e676]/70`} />
+        return <GoodCartoon className={`w-[320px] h-[240px] transition-colors duration-300 text-[#00e676] hover:text-[#00e676]/70`} />
       case 'Optimal Connection':
-        return <OptimalCartoon className={`w-[320px] h-[280px] transition-colors duration-300 text-[#00fff5] hover:text-[#00fff5]/70`} />
+        return <OptimalCartoon className={`w-[320px] h-[240px] transition-colors duration-300 text-[#00fff5] hover:text-[#00fff5]/70`} />
       default:
         return null
     }
@@ -93,56 +93,75 @@ if (isRunning && metrics.length === 0) {
       <div className="rounded-lg font-mono transition-colors duration-300 w-full bg-inherit h-full">
         <div className="mb-4 p-4 flex flex-col justify-between h-full">
           {summary ? (
-            <div className="flex flex-col justify-center items-center">
-              {/* <div 
-                className="text-xl font-bold uppercase text-center p-2 rounded-md"
-                style={{ 
-                  color: summary.quality.color,
-                  border: `2px solid ${summary.quality.color}`,
-                  backgroundColor: `${summary.quality.color}10`
-                }}
-              >
-                {summary.quality.status}
-              </div> */}
+            <div className="flex flex-col justify-center items-center h-full">
               <div 
-                className="text-xl font-bold uppercase text-center p-2 rounded-md w-full mb-6"
+                className="w-full max-w-[600px] p-6 rounded-xl border-2 bg-background/50 dark:bg-background/20"
                 style={{ 
-                  color: summary.quality.color,
-                  border: `2px solid ${summary.quality.color}`,
-                  backgroundColor: `${summary.quality.color}10`
+                  borderColor: `${summary.quality.color}40`,
+                  boxShadow: `0 0 20px ${summary.quality.color}20`
                 }}
               >
-                {summary.quality.status}
-              </div>
-              {getStatusCartoon(summary.quality.status)}
-
-              <div className="grid grid-cols-2   text-lg text-black dark:text-white gap-6  mt-4">
-
-                <div className="space-y-2">
-                  <p>Ping: <span className="inline-flex items-center gap-1">
-                    <span className={`inline-block w-2 h-2 rounded-full`} style={{ backgroundColor: summary.pingColor }} />
-                    <span className="font-mono">{summary.avgPing}ms</span>
-                  </span></p>
-                  <p>Jitter: <span className="inline-flex items-center gap-1">
-                    <span className={`inline-block w-2 h-2 rounded-full`} style={{ backgroundColor: summary.jitterColor }} />
-                    <span className="font-mono">{summary.avgJitter}ms</span>
-                  </span></p>
-                  <p>Packet Loss: <span className="inline-flex items-center gap-1">
-                    <span className={`inline-block w-2 h-2 rounded-full`} style={{ backgroundColor: summary.packetLossColor }} />
-                    <span className="font-mono">{summary.avgPacketLoss}%</span>
-                  </span></p>
+                <div 
+                  className="text-lg font-bold uppercase text-center p-2 rounded-md w-full mb-6"
+                  style={{ 
+                    color: summary.quality.color,
+                    backgroundColor: `${summary.quality.color}15`
+                  }}
+                >
+                  {summary.quality.status}
                 </div>
-                <div className="space-y-2">
-                  <p>Duration: <span className="font-mono text-primary">{summary.duration}</span></p>
-                  <p>Samples: <span className="font-mono text-primary">{summary.samples}</span></p>
-                </div>
+                
+                <div className="flex flex-col items-center">
+                  {getStatusCartoon(summary.quality.status)}
 
+                  <div className="w-full max-w-[500px] mx-auto mt-4 overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <tbody className="divide-y divide-primary/10">
+                        <tr className="border-t border-primary/10">
+                          <td className="py-2 px-4 whitespace-nowrap">Ping</td>
+                          <td className="py-2 px-4 font-mono whitespace-nowrap">
+                            <span className="inline-flex items-center gap-2">
+                              <span className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: summary.pingColor }} />
+                              {summary.avgPing}ms
+                            </span>
+                          </td>
+                          <td className="py-2 px-4 whitespace-nowrap">Duration</td>
+                          <td className="py-2 px-4 font-mono whitespace-nowrap">{summary.duration}</td>
+                        </tr>
+                        <tr>
+                          <td className="py-2 px-4 whitespace-nowrap">Jitter</td>
+                          <td className="py-2 px-4 font-mono whitespace-nowrap">
+                            <span className="inline-flex items-center gap-2">
+                              <span className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: summary.jitterColor }} />
+                              {summary.avgJitter}ms
+                            </span>
+                          </td>
+                          <td className="py-2 px-4 whitespace-nowrap">Samples</td>
+                          <td className="py-2 px-4 font-mono whitespace-nowrap">{summary.samples}</td>
+                        </tr>
+                        <tr>
+                          <td className="py-2 px-4 whitespace-nowrap">Packet Loss</td>
+                          <td className="py-2 px-4 font-mono whitespace-nowrap">
+                            <span className="inline-flex items-center gap-2">
+                              <span className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: summary.packetLossColor }} />
+                              {summary.avgPacketLoss}%
+                            </span>
+                          </td>
+                          <td className="py-2 px-4 whitespace-nowrap"></td>
+                          <td className="py-2 px-4 whitespace-nowrap"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
-              <div className="text-lg mt-4 text-muted-foreground">
+
+              {/* <div className="text-lg mt-6 text-muted-foreground">
                 <RetroBlinkText text="PRESS START TEST TO BEGIN NEW MEASUREMENT" />
-              </div>
+              </div> */}
             </div>
           ) : (
+            // ... rest of the code ...
             <div className="text-xl font-mono text-primary/70 h-full flex flex-col justify-center items-center gap-4">
               <StartCartoon className="w-[320px] h-[280px] text-muted-foreground hover:text-primary transition-colors duration-300" />
               <RetroBlinkText text="PRESS START TEST TO BEGIN" />

@@ -1,5 +1,5 @@
 "use client"
-import { Moon, Sun } from "lucide-react"
+import { Moon, Sun, Monitor  } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 import { 
@@ -59,7 +59,7 @@ export function ModeToggle() {
           onClick={() => setTheme("system")}
           className="flex items-center gap-2 cursor-pointer"
         >
-          <span className="i-carbon-screen h-4 w-4" />
+          <Monitor className="h-4 w-4" />
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -146,7 +146,7 @@ const segmentWidths = {
     <div className={cn(
       "rounded-lg font-mono transition-colors duration-300 bg-accent dark:bg-muted/40 [inset_0_0_8px_rgba(139,69,19,0.1)]", className)}>
       <div className={cn(
-                "border rounded-xl w-full p-4 border-primary/30 min-h-[135px] flex flex-col justify-between",
+                "border rounded-xl w-full p-4 border-primary/30 min-h-[130px] flex flex-col justify-between",
                 isResetting ? "text-blue-600 dark:text-blue-400" :
                 !isRunning ? "text-gray-600 dark:text-gray-400" :
                 isPaused 
@@ -187,7 +187,7 @@ const segmentWidths = {
             </div>
           </div>
          
-          <div className="mt-3 min-h-[40px]">
+          <div className=" min-h-[30px]">
           {/* Status Bar and Alerts */}
           {isRunning && latestMetrics && !isResetting ? (
             <NetworkHealthBar 
@@ -211,7 +211,7 @@ const segmentWidths = {
               <RetroBlinkText text="INITIALIZING NEW TEST SESSION..." />
             </div>
           ) : !isRunning ? (
-            <div className="text-xs font-mono text-muted-foreground text-center">
+            <div className="text-xs font-mono text-muted-foreground text-left">
               <RetroBlinkText text="PRESS START TEST TO BEGIN" />
             </div>
           ) : (
