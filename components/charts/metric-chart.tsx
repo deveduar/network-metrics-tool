@@ -61,7 +61,7 @@ type LatencyConfig = {
 
   const latestMetrics = metrics[metrics.length - 1]
   // const displayMetrics = [...metrics.slice(-15)].reverse()
-  const displayMetrics = [...metrics].reverse()
+  const displayMetrics = metrics.slice().reverse()
 
   const getChartConfig = (): ChartConfig => {
     if (type === "latency") {

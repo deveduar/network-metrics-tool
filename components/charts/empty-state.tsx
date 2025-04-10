@@ -156,9 +156,9 @@ if (isRunning && metrics.length === 0) {
                 </div>
               </div>
 
-              {/* <div className="text-lg mt-6 text-muted-foreground">
+              <div className="text-md mt-6 text-muted-foreground">
                 <RetroBlinkText text="PRESS START TEST TO BEGIN NEW MEASUREMENT" />
-              </div> */}
+              </div>
             </div>
           ) : (
             // ... rest of the code ...

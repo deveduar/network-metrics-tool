@@ -17,16 +17,17 @@ export function BarsChart({ type, metric, index, isRunning, config }: BarsChartP
     const pingHeight = `${(metric.ping / config.maxValues.ping) * 100}%`
     const jitterHeight = `${(metric.jitter / config.maxValues.jitter) * 100}%`
     const isNewBar = index === 0
-    const animationClass = isNewBar && isRunning ? "animate-slide-right" : ""
+    const animationClass = isNewBar && isRunning ? "animate-slide-right" : "opacity-100"
 
     const pingBorderColor = getMetricBorderColor.ping(metric.ping)
     const jitterBorderColor = getMetricBorderColor.jitter(metric.jitter)
 
     return (
-      <div key={`${metric.timestamp}-${index}`}
+      <div key={metric.timestamp} // Usar timestamp como key única
         className={cn(
-          "flex-1 flex justify-center gap-2 transition-transform",
-          animationClass
+          "flex-1 flex justify-center gap-2",
+          animationClass,
+          "transition-opacity duration-150" // Transición suave para la opacidad
         )}
         style={{
           minWidth: "clamp(12px, 4vw, 24px)",
