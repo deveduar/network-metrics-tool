@@ -22,7 +22,7 @@ export function RetroBlinkText({ text, className }: RetroBlinkTextProps) {
 
   return (
     <span className={cn("font-mono", className)}>
-      {text}<span className="inline-block min-w-[0.5em]">{blinkState ? " _" : " "}</span>
+      {text}<span className="inline-block w-[1em] text-center">{blinkState ? "_" : " "}</span>
     </span>
   )
 }

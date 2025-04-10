@@ -9,6 +9,7 @@ import ConnectionMood from "@/components/connection-mood"
 import { StatusIndicators } from "@/components/status-indicator"
 
 import { RetroBlinkText } from "@/components/retro-blink-text"
+import { RetroDotText } from "@/components/retro-dots-text"
 import { getMetricBorderColor, getMetricStatus } from "@/lib/metric-colors"
 import { MetricsIndicators } from "@/components/metrics-indicators"
 import { NetworkHealthBar } from "@/components/network-health-bar"
@@ -146,7 +147,7 @@ const segmentWidths = {
     <div className={cn(
       "rounded-lg font-mono transition-colors duration-300 bg-accent dark:bg-muted/40 [inset_0_0_8px_rgba(139,69,19,0.1)]", className)}>
       <div className={cn(
-                "border rounded-xl w-full p-4 border-primary/30 min-h-[130px] flex flex-col justify-between",
+                "border rounded-xl w-full p-4 border-primary/30 max-h-[130px] flex flex-col justify-between",
                 isResetting ? "text-blue-600 dark:text-blue-400" :
                 !isRunning ? "text-gray-600 dark:text-gray-400" :
                 isPaused 
@@ -162,13 +163,13 @@ const segmentWidths = {
                 networkQuality={networkQuality}
               />
             ) : isRunning && !latestMetrics ? (
-              <div className="h-[32px] inline-flex items-center text-sm tracking-widest whitespace-nowrap px-2 py-1 rounded-md border border-blue-300/50 dark:border-blue-500/30 bg-blue-50/50 dark:bg-blue-900/10 text-blue-600/70 dark:text-blue-400/70 animate-pulse">
-                LOADING DATA...
+              <div className="h-[32px] inline-flex items-center text-sm tracking-widest whitespace-nowrap px-2 py-1 rounded-md border border-blue-300/50 dark:border-blue-500/30 bg-blue-50/50 dark:bg-blue-900/10 text-blue-600/70 dark:text-blue-400/70">
+                <RetroDotText text="LOADING DATA" />
               </div>
             ) : (
               <div className={cn(
                 "h-[32px] inline-flex items-center text-sm tracking-widest whitespace-nowrap px-2 py-1 rounded-md",
-                "border text-foreground/70",
+                "border text-foreground/70 min-w-[120px] justify-center",
                 "bg-blue-50/90 border-blue-400/50 dark:bg-background/40 dark:border-primary/20",
                 isResetting ? "bg-blue-100 border-blue-400/50 dark:text-blue-400 dark:border-blue-300/30" :
                 !isRunning ? "bg-zinc-100 border-zinc-400/50 dark:text-gray-400 dark:border-zinc-300/20" :
@@ -176,7 +177,11 @@ const segmentWidths = {
                   ? "bg-yellow-100 border-yellow-400/50 dark:text-yellow-400 dark:border-yellow-300/30" 
                   : ""
               )}>
-                {isResetting ? "RESETTING TEST..." : !isRunning ? "TEST IDLE" : "TEST PAUSED"}
+                <div className="text-center w-full">
+                  {isResetting ? <RetroDotText text="RESETTING TEST" /> : 
+                   !isRunning ? <RetroBlinkText text="TEST IDLE" /> : 
+                   <RetroBlinkText text="TEST PAUSED" />}
+                </div>
               </div>
             )}
             <div className="flex justify-end text-black dark:text-white">
@@ -186,9 +191,16 @@ const segmentWidths = {
               />
             </div>
           </div>
-         
-          <div className=" min-h-[30px]">
-          {/* Status Bar and Alerts */}
+ 
+          {isRunning && latestMetrics && !isResetting ? (
+            <NetworkHealthBar 
+              networkQuality={networkQuality}
+              healthPercentage={getHealthPercentage()}
+              segmentWidths={segmentWidths}
+            />
+          ) : null}
+
+          {/* <div className=" ">
           {isRunning && latestMetrics && !isResetting ? (
             <NetworkHealthBar 
               networkQuality={networkQuality}
@@ -196,30 +208,30 @@ const segmentWidths = {
               segmentWidths={segmentWidths}
             />
           ) : isRunning && !latestMetrics && !isResetting ? (
-            <div className="h-[32px] flex items-center justify-center">
+            <div className=" flex items-center justify-center">
               <div className="w-full h-4 rounded-full overflow-hidden relative ">
                 <div className="h-full  animate-pulse rounded-full"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="text-[10px] font-mono text-blue-600/70 dark:text-blue-400/70 tracking-widest">
-                    LOADING METRICS...
+                    <RetroDotText text="LOADING METRICS" />
                   </span>
                 </div>
               </div>
             </div>
           ) : isResetting ? (
             <div className="text-xs font-mono text-blue-600 dark:text-blue-400 text-center">
-              <RetroBlinkText text="INITIALIZING NEW TEST SESSION..." />
+              <RetroDotText text="INITIALIZING NEW TEST SESSION" />
             </div>
           ) : !isRunning ? (
-            <div className="text-xs font-mono text-muted-foreground text-left">
+            <div className="text-xs font-mono text-muted-foreground text-center">
               <RetroBlinkText text="PRESS START TEST TO BEGIN" />
             </div>
           ) : (
             <div className="text-xs font-mono text-yellow-600 dark:text-yellow-400 text-center">
-              <RetroBlinkText text="TEST PAUSED - PRESS RESUME TO CONTINUE" />
+              <RetroDotText text="TEST PAUSED - PRESS RESUME TO CONTINUE" />
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   )

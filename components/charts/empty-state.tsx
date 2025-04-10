@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils"
 import type { NetworkMetrics } from "@/types/network"
 import { getSessionSummary } from "@/lib/utils"
 import { RetroBlinkText } from "@/components/retro-blink-text"
+import { RetroDotText } from "@/components/retro-dots-text"
 
 import { StartCartoon } from "@/components/icons/start-cartoon"
 import { CriticalCartoon } from "@/components/icons/critical"
@@ -61,9 +62,9 @@ if (isResetting) {
     <div className="rounded-lg font-mono transition-colors duration-300 w-full bg-inherit h-full">
       <div className="mb-4 p-4 flex flex-col justify-center items-center h-full">
         <div className="text-xl font-mono text-blue-500 dark:text-blue-400">
-          <p>Resetting measurement...</p>
-          <p className="text-sm mt-2">
-            <RetroBlinkText text="INITIALIZING NEW TEST SESSION" />
+          {/* <p>Resetting measurement...</p> */}
+          <p className="text-md mt-2">
+            <RetroDotText text="INITIALIZING NEW TEST SESSION" />
           </p>
         </div>
       </div>
@@ -77,9 +78,9 @@ if (isRunning && metrics.length === 0) {
     <div className="rounded-lg font-mono transition-colors duration-300 w-full bg-inherit h-full">
       <div className="mb-4 p-4 flex flex-col justify-center items-center h-full">
         <div className="text-xl font-mono text-primary/70">
-          <p>Initializing test...</p>
-          <p className="text-sm mt-2">
-            <RetroBlinkText text="COLLECTING METRICS..." />
+          {/* <p>Initializing test</p> */}
+          <p className="text-md mt-2">
+          <RetroDotText text="COLLECTING METRICS" />
           </p>
         </div>
       </div>
@@ -156,7 +157,7 @@ if (isRunning && metrics.length === 0) {
                 </div>
               </div>
 
-              <div className="text-md mt-6 text-muted-foreground">
+              <div className="text-md mt-4 text-muted-foreground">
                 <RetroBlinkText text="PRESS START TEST TO BEGIN NEW MEASUREMENT" />
               </div>
             </div>

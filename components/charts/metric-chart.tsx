@@ -3,7 +3,6 @@ import type { NetworkMetrics } from "@/types/network"
 import { getMetricStatus, getMetricBorderColor } from "@/lib/metric-colors"
 import { formatTime } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { EmptyState } from "@/components/charts/empty-state"
 import { ChartStatusIndicators } from "@/components/charts/chart-status-indicators"
 import { BarsChart } from "@/components/charts/bars-chart"
 
@@ -96,17 +95,17 @@ return (
   aspect-[4/3] sm:aspect-[3/2] md:aspect-[2/1] lg:aspect-[5/2] xl:aspect-[3/1] relative   ">
     <div className="h-full w-full relative rounded-lg backdrop-blur-sm font-mono">
       {/* Y-axis labels */}
-      <div className="absolute left-0 top-0 bottom-0 w-12 flex flex-col justify-between text-xs text-foreground/70 z-20">
-        <span className="bg-background/80 px-2 py-1 rounded-sm border border-primary/20">
+      <div className="absolute left-0 top-0 bottom-0 w-14 flex flex-col justify-between text-xs text-foreground/70 z-20">
+        <span className="bg-background/80 px-2 py-1 rounded-sm border border-primary/20 w-[60px] text-right">
           {Object.values(config.maxValues)[0].toFixed(type === "quality" ? 1 : 0)}{config.yAxisLabel}
         </span>
-        <span className="bg-background/80 px-2 py-1 rounded-sm border border-primary/20">
+        <span className="bg-background/80 px-2 py-1 rounded-sm border border-primary/20 w-[60px] text-right">
           0{config.yAxisLabel}
         </span>
       </div>
 
       {/* Chart area */}
-      <div className="absolute left-14 right-0 top-0 bottom-0 border-l-2 border-b-2 border-primary/30 z-10">
+      <div className="absolute left-[66px] right-0 top-0 bottom-0 border-l-2 border-b-2 border-primary/30 z-10">
         {/* Grid lines */}
         <div className="absolute left-0 right-0 top-1/4 border-t border-primary/20 border-dashed"></div>
         <div className="absolute left-0 right-0 top-1/2 border-t border-primary/20 border-dashed"></div>

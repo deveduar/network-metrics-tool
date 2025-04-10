@@ -96,7 +96,8 @@ export function NetworkChart({
   
   if (shouldShowEmptyState) {
     return (
-      <div className="h-[565px] border d border-primary/30 rounded-lg bg-accent dark:bg-muted/40 flex flex-col relative">
+      // "h-[565px]  h-[609px]
+      <div className="h-[625px] border d border-primary/30 rounded-lg bg-accent dark:bg-muted/40 flex flex-col relative">
         <div className="flex-1 flex items-center justify-center cursor-pointer" onClick={!isRunning && !isResetting ? onToggle : undefined}>
           <EmptyState 
             metrics={metrics} 
