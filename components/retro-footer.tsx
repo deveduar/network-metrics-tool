@@ -29,8 +29,8 @@ export function RetroFooter() {
   ]
 
   return (
-    <footer className="mt-12 mb-6">
-      <div className="container">
+    <footer className="sm:mt-6 md:mt-12 ">
+      <div className="md:container">
         <div className="bg-muted/30 dark:bg-muted/20 backdrop-blur-sm rounded-lg border-t-2 border-primary/10 dark:border-primary/20 p-3">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             {/* Left Section: Logo, Copyright and Links */}

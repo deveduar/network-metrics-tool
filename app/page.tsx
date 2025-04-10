@@ -8,7 +8,7 @@ export default function Home() {
     <main className="  ">
       <NetworkDashboard />
       
-      <div className="my-12">
+      <div className="my-6 md:my-12">
         <AboutSection />
       </div>
     </main>

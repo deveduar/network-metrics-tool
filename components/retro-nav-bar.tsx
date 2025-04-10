@@ -46,15 +46,15 @@ export function RetroNavBar() {
   ]
 
   return (
-    <nav className="my-6">
-      <div className="container">
+    <nav className="mb-6 md:mb-12">
+      <div className="md:container">
         <div className="bg-muted/40 dark:bg-muted/40 backdrop-blur-md rounded-lg border-b-2 border-primary/10 dark:border-primary/20 p-4">
           <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
           <Link 
               href="/"
-              className="font-mono text-xl font-bold tracking-wider uppercase flex items-center gap-2
-                         px-4 py-1 rounded-md relative group
+              className="font-mono text-base md:text-xl font-bold tracking-wider uppercase flex items-center gap-1 md:gap-2
+                         px-2 md:px-4 py-1 rounded-md relative group
                          border-2 border-primary/20 dark:border-primary/30
                          bg-background/50 dark:bg-background/10
                          shadow-[inset_0_-2px_0_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.3)]
@@ -62,13 +62,13 @@ export function RetroNavBar() {
                          active:translate-y-[2px] active:shadow-none
                          transition-all duration-300"
             >
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-[#00fff5]/60 dark:bg-[#00fff5]/80 animate-pulse" />
-                  <div className="w-2 h-2 rounded-full bg-[#64ffda]/60 dark:bg-[#64ffda]/80 animate-pulse delay-75" />
-                  <div className="w-2 h-2 rounded-full bg-[#00e676]/60 dark:bg-[#00e676]/80 animate-pulse delay-150" />
+              <div className="flex items-center gap-1 md:gap-2">
+                <div className="flex items-center gap-0.5 md:gap-1">
+                  <div className="w-1.5 md:w-2 h-1.5 md:h-2 rounded-full bg-[#00fff5]/60 dark:bg-[#00fff5]/80 animate-pulse" />
+                  <div className="w-1.5 md:w-2 h-1.5 md:h-2 rounded-full bg-[#64ffda]/60 dark:bg-[#64ffda]/80 animate-pulse delay-75" />
+                  <div className="w-1.5 md:w-2 h-1.5 md:h-2 rounded-full bg-[#00e676]/60 dark:bg-[#00e676]/80 animate-pulse delay-150" />
                 </div>
-                <span>
+                <span className="whitespace-nowrap">
                   Ping Test
                 </span>
               </div>

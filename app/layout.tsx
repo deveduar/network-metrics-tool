@@ -83,7 +83,7 @@ export default function RootLayout({
           storageKey="network-metrics-theme"
         >
           <RetroNavBar />
-          <div className="container">
+          <div className="md:container">
           {children}
 
           </div>
