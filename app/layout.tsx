@@ -67,7 +67,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <Head>
           {/* <meta key="fb-app-id" property="fb:app_id" content="" /> */}
 
@@ -75,7 +75,7 @@ export default function RootLayout({
 
         </Head>
       <body className="min-h-screen bg-background antialiased " >
-        <ThemeProvider
+      <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
