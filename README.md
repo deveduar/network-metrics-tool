@@ -1,6 +1,7 @@
 ---
 title: "Ping Test Tool"
 description: "A real-time network monitoring tool with a retro UI that helps users analyze latency, jitter, and packet loss."
+imageSrc: "https://i.postimg.cc/HLT5MH2H/artem-sapegin-b18-TRXc8-UPQ-unsplash.jpg"
 detailedDescription: "Network Metrics is a responsive and privacy-focused web app built with Next.js, TypeScript, and Zustand. It provides real-time feedback on connection quality, showing metrics like latency, jitter, and packet loss, all within a nostalgic retro-gaming interface."
 technologies:
   - "Next.js"
