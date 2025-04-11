@@ -11,9 +11,7 @@ technologies:
   - "Zustand"
   - "Web Workers"
 links:
-  - href: "https://github.com/deveduar/network-metrics"
-    label: "GitHub"
-  - href: "https://network-metrics.vercel.app"
+  - href: "https://ping-test-tool.vercel.app/"
     label: "Live Demo"
 gallery:
   - "https://i.postimg.cc/XYZ123/metrics-dashboard.webp"
@@ -75,4 +73,31 @@ A: Not yet, but this is a planned feature for future versions.
 - ✅ Only uses local storage for your UI preferences  
 - ✅ No third-party analytics or tracking cookies  
 
+## ⚠️ Limitations of the Network Measurement System
+
+### 1. **Ping Measurement**
+   - The system measures network latency using `HEAD` requests to various remote endpoints. These requests may not provide an accurate measurement of actual latency as results can be influenced by external factors like server load, user network, and internet propagation delays.
+   - The selected endpoints for ping measurement include popular services like Google, Cloudflare, Microsoft, Amazon, and Apple. If any of these services experience issues or downtime, the ping measurement may not be accurate or could fail.
+
+### 2. **Jitter**
+   - Jitter is calculated based on the time difference between consecutive ping measurements. If there is a large variation in response times between pings, this may affect the results.
+   - Jitter can be influenced by changes in the network, traffic fluctuations, and other variability outside the system's control.
+
+### 3. **Packet Loss**
+   - If a ping request fails (e.g., due to a network issue or server unavailability), it is counted as packet loss.
+   - The system does not directly measure packet loss but estimates it based on the successful and failed pings.
+
+### 4. **Limited to Remote Endpoints**
+   - Measurements are only performed towards selected remote servers, meaning they do not reflect latency or network quality between local devices or within a local network.
+   - Measurement accuracy could improve if local endpoints or specific servers were added depending on the use case.
+
+### 5. **Network Interruptions and Configuration**
+   - The measurement results can be affected by local network congestion or temporary internet connection issues. Ping, jitter, and packet loss metrics may vary significantly depending on network stability.
+   - The system does not provide detailed information about specific network issues (e.g., local bottlenecks or intermittent routing problems).
+
+### 6. **Use of `no-cors` in Requests**
+   - Measurement requests use the `no-cors` mode to avoid CORS-related issues, which limits the type of responses that can be received. This means that detailed server response metrics, such as header response time, are not available and only the round-trip time for the request is measured.
+
+### 7. **Measurement Intervals**
+   - The system performs measurements at 2-second intervals. If there is a network interruption or the server does not respond within this interval, an error or an increase in packet loss might be recorded.
 

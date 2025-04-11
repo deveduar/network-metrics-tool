@@ -173,12 +173,17 @@ const segmentWidths = {
                   networkQuality={networkQuality}
                 />
               ) : isRunning && !latestMetrics ? (
-                <div className="h-[32px] inline-flex items-center text-sm tracking-widest whitespace-nowrap px-2 py-1 rounded-md border border-blue-300/50 dark:border-blue-500/30 bg-blue-50/50 dark:bg-blue-900/10 text-blue-600/70 dark:text-blue-400/70">
+                <div className="h-[32px] inline-flex items-center tracking-widest whitespace-nowrap rounded-md
+                               text-[10px] sm:text-xs md:text-sm px-1.5 sm:px-2 py-0.5 sm:py-1
+                               border border-blue-300/50 dark:border-blue-500/30 
+                               bg-blue-50/50 dark:bg-blue-900/10 
+                               text-blue-600/70 dark:text-blue-400/70">
                   <RetroDotText text="LOADING DATA" />
                 </div>
               ) : (
                 <div className={cn(
-                  "h-[32px] inline-flex items-center text-sm tracking-widest whitespace-nowrap px-2 py-1 rounded-md",
+                  "h-[32px] inline-flex items-center tracking-widest whitespace-nowrap rounded-md",
+                  "text-[10px] sm:text-xs md:text-sm px-1.5 sm:px-2 py-0.5 sm:py-1",
                   "border text-foreground/70 min-w-[120px] justify-center",
                   "bg-blue-50/90 border-blue-400/50 dark:bg-background/40 dark:border-primary/20",
                   isResetting ? "bg-blue-100 border-blue-400/50 dark:text-blue-400 dark:border-blue-300/30" :

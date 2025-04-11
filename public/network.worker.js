@@ -113,7 +113,6 @@ async function runMeasurements() {
   }
 }
 
-// Rest of the code remains unchanged
 async function measurePing() {
   // Select a random endpoint for this test
   const endpoint = PING_ENDPOINTS[Math.floor(Math.random() * PING_ENDPOINTS.length)]
