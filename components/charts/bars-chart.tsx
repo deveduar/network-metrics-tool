@@ -10,9 +10,23 @@ interface BarsChartProps {
   index: number
   isRunning: boolean
   config: any
+  totalBars: number // Añadimos esta prop para calcular el ancho
 }
 
-export function BarsChart({ type, metric, index, isRunning, config }: BarsChartProps) {
+// Función para calcular el ancho de las barras basado en el número total
+const calculateBarWidth = (totalBars: number) => {
+  // Calculamos el ancho basado en el número total de barras
+  // Dejamos un pequeño margen para evitar que las barras se toquen
+  return `calc((100% / ${totalBars}) - 4px)`;
+}
+
+export function BarsChart({ type, metric, index, isRunning, config, totalBars }: BarsChartProps) {
+  // Calculamos el ancho de la barra basado en el número total
+  const barContainerWidth = calculateBarWidth(totalBars);
+  
+  // Ancho para las barras individuales (ping/jitter)
+  const individualBarWidth = "45%";
+
   if (type === "latency") {
     const pingHeight = `${(metric.ping / config.maxValues.ping) * 100}%`
     const jitterHeight = `${(metric.jitter / config.maxValues.jitter) * 100}%`
@@ -23,15 +37,14 @@ export function BarsChart({ type, metric, index, isRunning, config }: BarsChartP
     const jitterBorderColor = getMetricBorderColor.jitter(metric.jitter)
 
     return (
-      <div key={metric.timestamp} // Usar timestamp como key única
+      <div key={metric.timestamp}
         className={cn(
-          "flex-1 flex justify-center gap-2",
+          "flex justify-center gap-1 sm:gap-2",
           animationClass,
-          "transition-opacity duration-150" // Transición suave para la opacidad
+          "transition-opacity duration-150"
         )}
         style={{
-          minWidth: "clamp(12px, 4vw, 24px)",
-          maxWidth: "clamp(24px, 6vw, 40px)",
+          width: barContainerWidth,
           height: "100%",
           alignItems: "flex-end",
           ['--ping-color' as string]: `${pingBorderColor}95`,
@@ -39,44 +52,50 @@ export function BarsChart({ type, metric, index, isRunning, config }: BarsChartP
           ['--jitter-color' as string]: `${jitterBorderColor}40`,
           ['--jitter-border' as string]: `${jitterBorderColor}`,
         }}>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-            <div className={cn(
-                "w-[45%] rounded-t-sm transition-all duration-300 relative",
-                "bg-[var(--ping-color)] dark:bg-[var(--ping-color)]",
-                "border border-foreground/30  dark:border-[var(--ping-border)]",
-                metric.ping >= 1000 && "animate-pulse-glow"
-              )} 
-              style={{ height: pingHeight }} />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Ping: {metric.ping.toFixed(1)}ms</p>
-              <p className="text-xs text-muted-foreground">{formatTime(metric.timestamp)}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
               <div className={cn(
-                "w-[45%] rounded-t-sm transition-all duration-300 relative",
-                "bg-[var(--jitter-color)] dark:bg-[var(--jitter-color)]",
-                "border border-foreground/20 ",
-                metric.jitter >= 800 && "animate-pulse-glow"
-              )} 
-              style={{ height: jitterHeight }} />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Jitter: {metric.jitter.toFixed(1)}ms</p>
-              <p className="text-xs text-muted-foreground">{formatTime(metric.timestamp)}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
-    )
-  }
+                  "rounded-t-sm transition-all duration-300 relative",
+                  "bg-[var(--ping-color)] dark:bg-[var(--ping-color)]",
+                  "border border-foreground/30 dark:border-[var(--ping-border)]",
+                  metric.ping >= 1000 && "animate-pulse-glow"
+                )} 
+                style={{ 
+                  height: pingHeight,
+                  width: individualBarWidth
+                }} />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Ping: {metric.ping.toFixed(1)}ms</p>
+                <p className="text-xs text-muted-foreground">{formatTime(metric.timestamp)}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className={cn(
+                  "rounded-t-sm transition-all duration-300 relative",
+                  "bg-[var(--jitter-color)] dark:bg-[var(--jitter-color)]",
+                  "border border-foreground/20",
+                  metric.jitter >= 800 && "animate-pulse-glow"
+                )} 
+                style={{ 
+                  height: jitterHeight,
+                  width: individualBarWidth
+                }} />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Jitter: {metric.jitter.toFixed(1)}ms</p>
+                <p className="text-xs text-muted-foreground">{formatTime(metric.timestamp)}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      )
+    }
 
   // Quality chart (Packet Loss)
   const packetLossHeight = `${(metric.packetLoss / config.maxValues.packetLoss) * 100}%`
@@ -87,12 +106,11 @@ export function BarsChart({ type, metric, index, isRunning, config }: BarsChartP
   return (
     <div key={`${metric.timestamp}-${index}`}
       className={cn(
-        "flex-1 flex justify-center transition-transform",
+        "flex justify-center transition-transform",
         animationClass
       )}
       style={{
-        minWidth: "clamp(12px, 4vw, 24px)",
-        maxWidth: "clamp(24px, 6vw, 40px)",
+        width: barContainerWidth,
         height: "100%",
         alignItems: "flex-end"
       }}>
@@ -100,12 +118,13 @@ export function BarsChart({ type, metric, index, isRunning, config }: BarsChartP
         <Tooltip>
           <TooltipTrigger asChild>
             <div className={cn(
-              "w-[45%] rounded-t-sm transition-all duration-300 relative",
+              "rounded-t-sm transition-all duration-300 relative",
               "dark:bg-background/80",
               metric.packetLoss >= 5 && "animate-pulse-glow"
             )} 
             style={{ 
               height: packetLossHeight,
+              width: individualBarWidth,
               borderWidth: '1px',
               borderStyle: 'solid',
               borderColor: packetLossBorderColor,

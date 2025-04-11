@@ -48,15 +48,6 @@ type LatencyConfig = {
     isResetting = false,
     onToggle 
   }: MetricChartProps) {
-    // if (metrics.length === 0 || isResetting) {
-    //   return (
-    //     <div className="h-full w-full flex items-center justify-center">
-    //       <p className="text-muted-foreground">
-    //         {isResetting ? "Resetting chart data..." : "No data available"}
-    //       </p>
-    //     </div>
-    //   )
-    // }
 
   const latestMetrics = metrics[metrics.length - 1]
   // const displayMetrics = [...metrics.slice(-15)].reverse()
@@ -111,8 +102,8 @@ return (
         <div className="absolute left-0 right-0 top-1/2 border-t border-primary/20 border-dashed"></div>
         <div className="absolute left-0 right-0 top-3/4 border-t border-primary/20 border-dashed"></div>
 
-        {/* Data points */}
-        <div className="absolute inset-2 flex flex-wrap items-end justify-end gap-[2px] z-20">
+        {/* Data points - Ajustado para llenar el espacio disponible */}
+        <div className="absolute inset-2 flex items-end justify-between gap-0 z-20 overflow-hidden">
           {displayMetrics.map((metric, index) => (
             <BarsChart
               key={`${metric.timestamp}-${index}`}
@@ -121,6 +112,7 @@ return (
               index={index}
               isRunning={isRunning}
               config={config}
+              totalBars={displayMetrics.length}
             />
           ))}
         </div>

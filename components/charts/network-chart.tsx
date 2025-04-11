@@ -31,16 +31,16 @@ export function NetworkChart({
   const [visibleCount, setVisibleCount] = useState(15)
   const latestMetrics = metrics.length > 0 ? metrics[metrics.length - 1] : null
 
-  const pingStatus = latestMetrics ? getMetricStatus.ping(latestMetrics.ping) : 'Optimal';
-  const jitterStatus = latestMetrics ? getMetricStatus.jitter(latestMetrics.jitter) : 'Optimal';
-  const lossStatus = latestMetrics ? getMetricStatus.packetLoss(latestMetrics.packetLoss) : 'Optimal';
+  // const pingStatus = latestMetrics ? getMetricStatus.ping(latestMetrics.ping) : 'Optimal';
+  // const jitterStatus = latestMetrics ? getMetricStatus.jitter(latestMetrics.jitter) : 'Optimal';
+  // const lossStatus = latestMetrics ? getMetricStatus.packetLoss(latestMetrics.packetLoss) : 'Optimal';
 
-  const networkQuality = latestMetrics 
-    ? getOverallNetworkQuality(pingStatus, jitterStatus, lossStatus)
-    : { status: 'Waiting...', color: '#00e676' }
+  // const networkQuality = latestMetrics 
+  //   ? getOverallNetworkQuality(pingStatus, jitterStatus, lossStatus)
+  //   : { status: 'Waiting...', color: '#00e676' }
 
   const getVisibleMetricsCount = () => {
-    const width = window.innerWidth
+    const width = typeof window !== 'undefined' ? window.innerWidth : 1200
     
     // Pantallas grandes (monitores de escritorio)
     if (width >= 1800) return 40
@@ -48,21 +48,21 @@ export function NetworkChart({
     if (width >= 1400) return 30
     
     // Pantallas medianas (laptops y tablets horizontales)
-    if (width >= 1200) return 26
-    if (width >= 1024) return 22
+    if (width >= 1200) return 24
+    if (width >= 1024) return 20
     
     // Tablets y móviles grandes en horizontal
-    if (width >= 900) return 20
-    if (width >= 768) return 16
+    if (width >= 900) return 16
+    if (width >= 768) return 12
     
     // Móviles en horizontal o tablets en vertical
-    if (width >= 640) return 14
+    if (width >= 640) return 8
     
     // Móviles en vertical
-    if (width >= 480) return 10
+    if (width >= 480) return 6
     
     // Pantallas muy pequeñas
-    return 8
+    return 5
   }
     
   // Efecto para actualizar el número de métricas visibles al cambiar el tamaño de la ventana
