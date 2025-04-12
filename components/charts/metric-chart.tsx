@@ -102,8 +102,11 @@ return (
         <div className="absolute left-0 right-0 top-1/2 border-t border-primary/20 border-dashed"></div>
         <div className="absolute left-0 right-0 top-3/4 border-t border-primary/20 border-dashed"></div>
 
-        {/* Data points - Ajustado para llenar el espacio disponible */}
-        <div className="absolute inset-2 flex items-end justify-between gap-0 z-20 overflow-hidden">
+        {/* Data points - Siempre alineados a la derecha para evitar espacios vacíos */}
+        <div className={cn(
+          "absolute inset-2 flex items-end  z-20 overflow-hidden gap-1",
+          metrics.length > displayMetrics.length ? "justify-end" : "justify-between md:justify-end"
+        )}>
           {displayMetrics.map((metric, index) => (
             <BarsChart
               key={`${metric.timestamp}-${index}`}

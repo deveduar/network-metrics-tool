@@ -13,11 +13,38 @@ interface BarsChartProps {
   totalBars: number // Añadimos esta prop para calcular el ancho
 }
 
-// Función para calcular el ancho de las barras basado en el número total
 const calculateBarWidth = (totalBars: number) => {
-  // Calculamos el ancho basado en el número total de barras
-  // Dejamos un pequeño margen para evitar que las barras se toquen
+  const width = typeof window !== 'undefined' ? window.innerWidth : 1200
+  
+  // En pantallas grandes, calculamos el ancho basado en el número de barras visibles
+  if (width >= 1800) {
+    return `calc((100% / 30) - 4px)`; // Para 30 barras visibles en pantallas muy grandes
+  }
+  if (width >= 1600) {
+    return `calc((100% / 26) - 4px)`; // Para 26 barras visibles
+  }
+  if (width >= 1400) {
+    return `calc((100% / 22) - 4px)`; // Para 22 barras visibles
+  }
+  if (width >= 1200) {
+    return `calc((100% / 18) - 4px)`; // Para 18 barras visibles
+  }
+  
+  // En pantallas pequeñas, calculamos el ancho para distribuir uniformemente
   return `calc((100% / ${totalBars}) - 4px)`;
+}
+
+
+const calculateIndividualBarWidth = () => {
+  const width = typeof window !== 'undefined' ? window.innerWidth : 1200
+  
+  // En pantallas grandes, hacemos las barras individuales más anchas
+  if (width >= 1800) return "65%";
+  if (width >= 1400) return "60%";
+  if (width >= 1200) return "55%";
+  
+  // En pantallas pequeñas, mantenemos el ancho estándar
+  return "45%";
 }
 
 export function BarsChart({ type, metric, index, isRunning, config, totalBars }: BarsChartProps) {
@@ -25,7 +52,7 @@ export function BarsChart({ type, metric, index, isRunning, config, totalBars }:
   const barContainerWidth = calculateBarWidth(totalBars);
   
   // Ancho para las barras individuales (ping/jitter)
-  const individualBarWidth = "45%";
+  const individualBarWidth = calculateIndividualBarWidth();
 
   if (type === "latency") {
     const pingHeight = `${(metric.ping / config.maxValues.ping) * 100}%`

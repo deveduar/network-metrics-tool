@@ -43,13 +43,14 @@ export function NetworkChart({
     const width = typeof window !== 'undefined' ? window.innerWidth : 1200
     
     // Pantallas grandes (monitores de escritorio)
-    if (width >= 1800) return 40
-    if (width >= 1600) return 35
-    if (width >= 1400) return 30
+    // Reducimos ligeramente el número de barras para que sean más anchas
+    if (width >= 1800) return 30
+    if (width >= 1600) return 26
+    if (width >= 1400) return 22
     
     // Pantallas medianas (laptops y tablets horizontales)
-    if (width >= 1200) return 24
-    if (width >= 1024) return 20
+    if (width >= 1200) return 18
+    if (width >= 1024) return 16
     
     // Tablets y móviles grandes en horizontal
     if (width >= 900) return 16
