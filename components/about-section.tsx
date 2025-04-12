@@ -353,30 +353,21 @@ export function AboutSection({ className }: AboutSectionProps) {
                 While we strive to provide accurate measurements, there are inherent limitations to browser-based network testing:
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div role="article" className="space-y-3 p-3 bg-background/30 rounded-md border border-primary/20">
-                  <h3 className="font-medium text-primary border-b border-primary/10 pb-1">Ping Measurement</h3>
-                  <ul className="space-y-2" role="list">
-                    <li className="flex items-start gap-2">
-                      <ChevronRight className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-muted-foreground">Uses HEAD requests to remote endpoints which may be affected by server load and internet routing</p>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <ChevronRight className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-muted-foreground">Relies on public services that could experience downtime</p>
-                    </li>
-                  </ul>
-                </div>
-                
+
                 <div role="article" className="space-y-3 p-3 bg-background/30 rounded-md border border-primary/20">
                   <h3 className="font-medium text-primary border-b border-primary/10 pb-1">Ping Measurement</h3>
                   <ul className="space-y-2" role="list">
                     <li className="flex items-start gap-2">
                       <ChevronRight className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-muted-foreground">Uses HEAD requests to remote endpoints which may be affected by server load and internet routing</p>
+                      <p className="text-xs text-muted-foreground">Uses HTTP HEAD requests instead of low-level ICMP ping</p>
                     </li>
                     <li className="flex items-start gap-2">
                       <ChevronRight className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-muted-foreground">Relies on public services that could experience downtime</p>
+                      <p className="text-xs text-muted-foreground">Includes server response time, not just raw latency</p>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <ChevronRight className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-muted-foreground">Results can be affected by server load or geographic distance</p>
                     </li>
                   </ul>
                 </div>
@@ -387,28 +378,50 @@ export function AboutSection({ className }: AboutSectionProps) {
                   <ul className="space-y-2" role="list">
                     <li className="flex items-start gap-2">
                       <ChevronRight className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-muted-foreground">Only tests against remote servers, not local network quality</p>
+                      <p className="text-xs text-muted-foreground">Only tests remote endpoints — not local or internal network quality</p>
                     </li>
                     <li className="flex items-start gap-2">
                       <ChevronRight className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-muted-foreground">Cannot identify specific network issues like bottlenecks</p>
+                      <p className="text-xs text-muted-foreground">Cannot detect specific issues like congestion, signal loss, or packet routing</p>
                     </li>
-                  </ul>
-                </div>
+                    <li className="flex items-start gap-2">
+                    <ChevronRight className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-xs text-muted-foreground">Test accuracy may vary depending on the selected endpoints</p>
+                  </li>
+                </ul>
+              </div>
                 
-                <div role="article" className="space-y-3 p-3 bg-background/30 rounded-md border border-primary/20">
-                  <h3 className="font-medium text-primary border-b border-primary/10 pb-1">Technical Constraints</h3>
-                  <ul className="space-y-2" role="list">
-                    <li className="flex items-start gap-2">
-                      <ChevronRight className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-muted-foreground">Uses no-cors mode which limits detailed response metrics</p>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <ChevronRight className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-muted-foreground">Fixed 2-second measurement intervals may affect accuracy during network fluctuations</p>
-                    </li>
-                  </ul>
-                </div>
+              <div role="article" className="space-y-3 p-3 bg-background/30 rounded-md border border-primary/20">
+                <h3 className="font-medium text-primary border-b border-primary/10 pb-1">Browser Limitations</h3>
+                <ul className="space-y-2" role="list">
+                  <li className="flex items-start gap-2">
+                    <ChevronRight className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-xs text-muted-foreground">Browsers block low-level protocols like ICMP, limiting measurement accuracy</p>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ChevronRight className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-xs text-muted-foreground">no-cors requests hide response status, making errors indistinguishable</p>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ChevronRight className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-xs text-muted-foreground">Cannot access IP address, region, or CDN location of the server</p>
+                  </li>
+                </ul>
+              </div>
+
+              <div role="article" className="space-y-3 p-3 bg-background/30 rounded-md border border-primary/20">
+                <h3 className="font-medium text-primary border-b border-primary/10 pb-1">Sampling Constraints</h3>
+                <ul className="space-y-2" role="list">
+                  <li className="flex items-start gap-2">
+                    <ChevronRight className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-xs text-muted-foreground">Fixed 2-second sampling intervals may miss short-term spikes</p>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ChevronRight className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-xs text-muted-foreground">Randomized endpoints can introduce variability in results</p>
+                  </li>
+                </ul>
+              </div>
               </div>
             </div>
           </section>
