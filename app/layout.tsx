@@ -74,7 +74,7 @@ export default function RootLayout({
           <meta name="apple-mobile-web-app-title" content="Ping Test" />
 
         </Head>
-      <body className="min-h-screen bg-background antialiased " >
+      <body className="min-h-screen bg-background antialiased " suppressHydrationWarning>
       <ThemeProvider
           attribute="class"
           defaultTheme="dark"

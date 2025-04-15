@@ -20,6 +20,19 @@ interface NetworkStatusIndicatorProps {
       Math.abs(latestMetrics.packetLoss - metrics[metrics.length - 2].packetLoss) > 0.5
     );
   
+    const alertTexts = [];
+    if (metrics.length > 1) {
+      if (Math.abs(latestMetrics.ping - metrics[metrics.length - 2].ping) > 50) {
+        alertTexts.push("PING SPIKE");
+      }
+      if (Math.abs(latestMetrics.jitter - metrics[metrics.length - 2].jitter) > 15) {
+        alertTexts.push("JITTER CHANGE");
+      }
+      if (Math.abs(latestMetrics.packetLoss - metrics[metrics.length - 2].packetLoss) > 0.5) {
+        alertTexts.push("PACKET LOSS");
+      }
+    }
+
     return (
       <div className="h-[32px] flex items-center">
         {!hasSignificantChanges ? (
@@ -38,7 +51,7 @@ interface NetworkStatusIndicatorProps {
           ['--metric-border' as string]: `${networkQuality.color}40`,
           boxShadow: `inset 0 0 0.5rem ${networkQuality.color}10`
         } as React.CSSProperties}>
-          NETWORK STATUS: {networkQuality.status}
+          <span>NETWORK STATUS: {networkQuality.status}</span>
         </span>
       ) : (
         <span className={cn(
@@ -47,10 +60,8 @@ interface NetworkStatusIndicatorProps {
           "bg-red-50/80 dark:bg-red-900/20 border border-red-200 dark:border-red-800",
           "text-red-500 animate-metric-alert"
         )}>
-          ⚠ ALERT: {" "}
-          {Math.abs(latestMetrics.ping - metrics[metrics.length - 2].ping) > 50 ? "PING SPIKE " : ""}
-          {Math.abs(latestMetrics.jitter - metrics[metrics.length - 2].jitter) > 15 ? "JITTER CHANGE " : ""}
-          {Math.abs(latestMetrics.packetLoss - metrics[metrics.length - 2].packetLoss) > 0.5 ? "PACKET LOSS" : ""}
+          <span>⚠ ALERT: {alertTexts.join(" ")}</span>
+         
         </span>
       )}
     </div>
