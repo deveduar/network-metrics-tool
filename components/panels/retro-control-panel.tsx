@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { RETRO_ASCII, ANIMATION_SPEEDS } from "../retro-control-constants"
 import { RefreshCw, Play, Square, Pause } from "lucide-react"
-import { getMetricBorderColor } from "@/lib/metric-colors"
 
 interface RetroControlPanelProps {
   isRunning: boolean
@@ -71,12 +69,16 @@ export function RetroControlPanel({
             {isRunning ? (
               <>
                 <Square className="mr-2 h-5 w-5" />
+                <span>
                 Stop 
+                </span>
               </>
             ) : (
               <>
                 <Play className="mr-2 h-5 w-5" />
+                <span>
                 Start Test
+                </span>
               </>
             )}
           </Button>
@@ -105,14 +107,21 @@ export function RetroControlPanel({
               aria-label={isPaused ? "Resume test" : "Pause test"}
             >
               {isPaused ? (
-                <>
+                  <>
+
                   <Play className="mr-2 h-5 w-5" />
+                  <span>
                   Resume 
+
+                  </span>
+                  
                 </>
               ) : (
                 <>
                   <Pause className="mr-2 h-5 w-5" />
+                  <span>
                   Pause 
+                  </span>
                 </>
               )}
             </Button>
